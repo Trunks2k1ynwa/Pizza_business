@@ -1,0 +1,23 @@
+[
+  {
+    "title": "Top 10 Beauty Tips for Flawless Skin",
+    "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed aliquam lectus vel tortor convallis, sit amet rhoncus mauris scelerisque. Ut efficitur augue vel ullamcorper malesuada. Maecenas ultrices sapien augue, a fermentum velit bibendum eget. Nullam suscipit posuere arcu, et posuere elit varius non. Proin id ante id velit congue facilisis. Suspendisse tempor arcu nec dolor rhoncus semper. Etiam a quam odio. Sed dictum scelerisque libero, ac viverra libero facilisis vitae. Aenean suscipit vestibulum metus, ac convallis arcu volutpat eu. Quisque hendrerit fermentum orci, a volutpat lectus venenatis id. Cras consequat tellus augue, ac ullamcorper neque ultrices nec. Praesent a mauris id libero feugiat rutrum eget ac enim. Sed sollicitudin bibendum venenatis. Fusce dignissim bibendum fermentum. Vestibulum cursus metus dolor, vitae consectetur nisl volutpat ac. In hac habitasse platea dictumst.",
+    "author": "Jane Smith",
+    "created_at": "2022-02-01T09:30:00Z",
+    "updated_at": "2022-02-01T09:30:00Z"
+  },
+  {
+    "title": "How to Achieve the Perfect Winged Eyeliner",
+    "content": "Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nulla ac ultrices metus. Aenean rhoncus, sem et elementum posuere, elit ex consectetur elit, non euismod odio arcu ut urna. Donec et ipsum ut urna auctor dapibus. Morbi in massa ut risus semper semper non ac velit. Proin aliquet id ex vitae posuere. Morbi nec diam vitae urna bibendum dignissim ac in ante. Donec vel ullamcorper nisi. Vivamus pellentesque aliquet bibendum. Quisque vitae consequat est. Vivamus tincidunt bibendum fringilla. Curabitur facilisis felis sit amet mauris ullamcorper, nec euismod tortor hendrerit. Curabitur a eros vel sem mollis vehicula at eget mauris. Praesent volutpat lacus in est eleifend vestibulum. Suspendisse potenti. Praesent consequat consequat nulla vitae cursus. Fusce venenatis malesuada diam nec vestibulum. Quisque pellentesque dui vel lacus vestibulum, at varius sapien malesuada.",
+    "author": "John Doe",
+    "created_at": "2022-02-02T14:15:00Z",
+    "updated_at": "2022-02-02T14:15:00Z"
+  },
+  {
+    "title": "How to Achieve the Perfect Winged Eyeliner",
+    "content": "Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nulla ac ultrices metus. Aenean rhoncus, sem et elementum posuere, elit ex consectetur elit, non euismod odio arcu ut urna. Donec et ipsum ut urna auctor dapibus. Morbi in massa ut risus semper semper non ac velit. Proin aliquet id ex vitae posuere. Morbi nec diam vitae urna bibendum dignissim ac in ante. Donec vel ullamcorper nisi. Vivamus pellentesque aliquet bibendum. Quisque vitae consequat est. Vivamus tincidunt bibendum fringilla. Curabitur facilisis felis sit amet mauris ullamcorper, nec euismod tortor hendrerit. Curabitur a eros vel sem mollis vehicula at eget mauris. Praesent volutpat lacus in est eleifend vestibulum. Suspendisse potenti. Praesent consequat consequat nulla vitae cursus. Fusce venenatis malesuada diam nec vestibulum. Quisque pellentesque dui vel lacus vestibulum, at varius sapien malesuada.",
+    "author": "John Doe",
+    "created_at": "2022-02-02T14:15:00Z",
+    "updated_at": "2022-02-02T14:15:00Z"
+  }
+]

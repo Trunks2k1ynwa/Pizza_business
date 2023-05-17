@@ -1,0 +1,45 @@
+[
+  {
+    "username": "user1",
+    "password": "password1",
+    "fullname": "Nguyen Van A",
+    "email": "user1@example.com",
+    "address": "123 Street, City A, Country A",
+    "role":"Quyền truy cập"
+  },
+  {
+    "username": "user2",
+    "password": "password2",
+    "fullname": "Tran Thi B",
+    "email": "user2@example.com",
+    "address": "456 Street, City B, Country B"
+  },
+  {
+    "username": "user3",
+    "password": "password3",
+    "fullname": "Le Van C",
+    "email": "user3@example.com",
+    "address": "789 Street, City C, Country C"
+  },
+  {
+    "username": "user4",
+    "password": "password4",
+    "fullname": "Le Van D",
+    "email": "user4@example.com",
+    "address": "789 Street, City C, Country C"
+  },
+  {
+    "username": "user5",
+    "password": "password5",
+    "fullname": "Le Van E",
+    "email": "user4@example.com",
+    "address": "789 Street, City C, Country C"
+  },
+  {
+    "username": "user6",
+    "password": "password6",
+    "fullname": "Le Van F",
+    "email": "user4@example.com",
+    "address": "789 Street, City C, Country C"
+  }
+]

@@ -1,0 +1,37 @@
+[
+  {
+    "name": "Tên sản phẩm",
+    "brand": "Thương hiệu",
+    "category": "Thể loại",
+    "price": 12.99,
+    "rating": 4.5,
+    "colors": ["Light Beige", "Medium Tan", "Dark Cocoa"],
+    "sale":20,
+    "cout_bought":234,
+    "description":"Mô tả sản phẩm",
+    "short_description":"Bám màu ấn tượng tói 8h",
+    "img": "https://example.com/foundation.jpg",
+    "created_at": "2022-01-01T10:00:00Z",
+    "updated_at": "2022-01-01T10:00:00Z"
+  },
+  {
+    "name": "Facial Cleanser",
+    "brand": "Cetaphil",
+    "category": "Skincare",
+    "price": 8.99,
+    "rating": 4.8,
+    "img": "https://example.com/facial_cleanser.jpg",
+    "created_at": "2022-01-02T14:30:00Z",
+    "updated_at": "2022-01-02T14:30:00Z"
+  },
+  {
+    "name": "Hair Serum",
+    "brand": "Moroccan Oil",
+    "category": "Haircare",
+    "price": 26.99,
+    "rating": 4.6,
+    "img": "https://example.com/hair_serum.jpg",
+    "created_at": "2022-01-03T16:45:00Z",
+    "updated_at": "2022-01-03T16:45:00Z"
+  }
+]

@@ -1,0 +1,32 @@
+[
+  {
+    "shipping_id": "SHIP12345",
+    "order_number": "ORD12345",
+    "customer_name": "John Doe",
+    "shipping_address": "1234 Elm Street, Suite 567",
+    "city": "Los Angeles",
+    "state": "CA",
+    "zip_code": "90001",
+    "country": "United States",
+    "shipping_status": "Shipped",
+    "estimated_delivery_date": "2023-04-15",
+    "tracking_number": "1234567890",
+    "created_at": "2022-06-01T12:00:00Z",
+    "updated_at": "2022-06-01T12:00:00Z"
+  },
+  {
+    "shipping_id": "SHIP56789",
+    "order_number": "ORD56789",
+    "customer_name": "Jane Smith",
+    "shipping_address": "5678 Oak Avenue, Apt 123",
+    "city": "New York",
+    "state": "NY",
+    "zip_code": "10001",
+    "country": "United States",
+    "shipping_status": "In Transit",
+    "estimated_delivery_date": "2023-04-14",
+    "tracking_number": "9876543210",
+    "created_at": "2022-06-02T14:30:00Z",
+    "updated_at": "2022-06-02T14:30:00Z"
+  }
+]

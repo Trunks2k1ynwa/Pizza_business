@@ -1,0 +1,38 @@
+[
+  {
+    "order_number": "ORD12345",
+    "customer_name": "John Doe",
+    "customer_email": "johndoe@example.com",
+    "product_name": "Skincare Set",
+    "product_price": 50,
+    "quantity": 2,
+    "total_amount": 100,
+    "shipping_address": "1234 Elm Street, Suite 567",
+    "city": "Los Angeles",
+    "state": "CA",
+    "zip_code": "90001",
+    "country": "United States",
+    "payment_method": "Credit Card",
+    "order_date": "2023-04-12T10:30:00Z",
+    "created_at": "2022-06-01T12:00:00Z",
+    "updated_at": "2022-06-01T12:00:00Z"
+  },
+  {
+    "order_number": "ORD56789",
+    "customer_name": "Jane Smith",
+    "customer_email": "janesmith@example.com",
+    "product_name": "Makeup Palette",
+    "product_price": 35,
+    "quantity": 1,
+    "total_amount": 35,
+    "shipping_address": "5678 Oak Avenue, Apt 123",
+    "city": "New York",
+    "state": "NY",
+    "zip_code": "10001",
+    "country": "United States",
+    "payment_method": "PayPal",
+    "order_date": "2023-04-11T15:45:00Z",
+    "created_at": "2022-06-02T14:30:00Z",
+    "updated_at": "2022-06-02T14:30:00Z"
+  }
+]

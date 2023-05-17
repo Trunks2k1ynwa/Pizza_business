@@ -1,0 +1,44 @@
+[
+  {
+    "name": "Trang điểm",
+    "description": "Các sản phẩm liên quan đến trang điểm, bao gồm phấn nền, kem che khuyết điểm, phấn mắt, son môi và mascara.",
+    "created_at": "2022-01-02T14:30:00Z",
+    "updated_at": "2022-01-02T14:30:00Z"
+  },
+  {
+    "name": "Chăm sóc da",
+    "description": "Các sản phẩm liên quan đến chăm sóc da, bao gồm sữa rửa mặt, toner, kem dưỡng ẩm, serum và mặt nạ.",
+    "created_at": "2022-01-01T12:00:00Z",
+    "updated_at": "2022-01-01T12:00:00Z"
+  },
+  {
+    "name": "Chăm sóc tóc",
+    "description": "Các sản phẩm liên quan đến chăm sóc tóc, bao gồm dầu gội, dầu xả, mặt nạ tóc, dầu và các sản phẩm tạo kiểu tóc.",
+    "created_at": "2022-01-03T10:15:00Z",
+    "updated_at": "2022-01-03T10:15:00Z"
+  },
+  {
+    "name": "Chăm sóc cơ thể",
+    "description": "Các sản phẩm liên quan đến da, trị mụn, bao gồm sữa tắm da, xà phòng trị mụn, dầu gội dưỡng da",
+    "created_at": "2022-01-04T16:45:00Z",
+    "updated_at": "2022-01-04T16:45:00Z"
+  },
+  {
+    "name": "Hương thơm",
+    "description": "Các sản phẩm liên quan đến nước hoa, bao gồm nước hoa, nước hoa, xịt thơm cơ thể và nước thơm.",
+    "created_at": "2022-01-04T16:45:00Z",
+    "updated_at": "2022-01-04T16:45:00Z"
+  },
+  {
+    "name": "Em bé",
+    "description": "Các sản phẩm liên quan đến chắm sóc cho em bé, bao gồm sữa tắm, dầu gội, kem bôi lành da.",
+    "created_at": "2022-01-04T16:45:00Z",
+    "updated_at": "2022-01-04T16:45:00Z"
+  },
+  {
+    "name": "Sản phẩm thiên nhiên",
+    "description": "Các sản phẩm được tạo ra từ các thành phần trong thiên nhiên, không có thành phần hóa học",
+    "created_at": "2022-01-05T11:30:00Z",
+    "updated_at": "2022-01-05T11:30:00Z"
+  }
+]

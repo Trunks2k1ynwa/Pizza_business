@@ -1,0 +1,26 @@
+[
+  {
+    "product_name": "Product 1",
+    "quantity": 2,
+    "price": 10.99,
+    "total_price": 21.98,
+    "discount": 0.2,
+    "image": "product1.jpg"
+  },
+  {
+    "product_name": "Product 2",
+    "quantity": 1,
+    "price": 19.99,
+    "total_price": 19.99,
+    "discount": 0,
+    "image": "product2.jpg"
+  },
+  {
+    "product_name": "Product 3",
+    "quantity": 3,
+    "price": 15.5,
+    "total_price": 46.5,
+    "discount": 0.1,
+    "image": "product3.jpg"
+  }
+]
