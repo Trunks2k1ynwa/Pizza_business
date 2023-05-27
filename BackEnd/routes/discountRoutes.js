@@ -1,12 +1,12 @@
-import { Router } from 'express';
-import {
+const { Router } = require('express');
+const {
   createDiscount,
   deleteDiscount,
   getAllDiscount,
   getDiscount,
   updateDiscount,
-} from '../controllers/discountController.js';
-import { restrictTo } from '../controllers/authController.js';
+} = require('../controllers/discountController');
+const { restrictTo, protect } = require('../controllers/authController');
 
 const router = Router();
 

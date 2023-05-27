@@ -1,16 +1,8 @@
-/* eslint-disable node/no-unsupported-features/es-syntax */
-import Account from '../models/accountModel.js';
-import AppError from '../utils/appError.js';
-import catchAsync from '../utils/catchAsync.js';
-import Email from '../utils/email.js';
-import tranposter from '../utils/nodemailer.js';
-import {
-  createOne,
-  deleteOne,
-  getAll,
-  getOne,
-  updateOne,
-} from './handlerFactory.js';
+const Account = require('../models/accountModel');
+const AppError = require('../utils/appError');
+const catchAsync = require('../utils/catchAsync');
+const Email = require('../utils/email');
+const { deleteOne, getAll, getOne, updateOne } = require('./handlerFactory');
 
 const filterObj = (obj, ...allowedFields) => {
   const newObj = {};
@@ -20,7 +12,7 @@ const filterObj = (obj, ...allowedFields) => {
   return newObj;
 };
 
-export const updateInfoMe = catchAsync(async (req, res, next) => {
+exports.updateInfoMe = catchAsync(async (req, res, next) => {
   // 1) Create error if user POSTs password data
   if (req.body.password || req.body.passwordConfirm) {
     return next(
@@ -61,7 +53,7 @@ export const updateInfoMe = catchAsync(async (req, res, next) => {
   });
 });
 
-export const updateMe = catchAsync(async (req, res, next) => {
+exports.updateMe = catchAsync(async (req, res, next) => {
   // 1) Create error if user POSTs password data
   if (req.body.password || req.body.passwordConfirm) {
     return next(
@@ -115,12 +107,12 @@ export const updateMe = catchAsync(async (req, res, next) => {
   });
 });
 
-export const getMe = (req, res, next) => {
+exports.getMe = (req, res, next) => {
   req.params.id = req.user._id;
   next();
 };
 
-export const deleteMe = catchAsync(async (req, res) => {
+exports.deleteMe = catchAsync(async (req, res) => {
   await Account.findByIdAndUpdate(req.user.id, { active: false });
   res.status(204).json({
     status: 'success',
@@ -128,12 +120,12 @@ export const deleteMe = catchAsync(async (req, res) => {
   });
 });
 
-export const getAccount = getOne(Account, {
+exports.getAccount = getOne(Account, {
   path: 'history.order',
   select: ['products', 'totalMoney', 'status'],
 });
 
-export const getMyOrder = catchAsync(async (req, res, next) => {
+exports.getMyOrder = catchAsync(async (req, res, next) => {
   let query = Account.findById(req.params.id);
   query = query.populate({
     path: 'history.order',
@@ -159,10 +151,10 @@ export const getMyOrder = catchAsync(async (req, res, next) => {
   });
 });
 
-export const getAllAccounts = getAll(Account);
-export const updateAccount = updateOne(Account);
-export const deleteAccount = deleteOne(Account);
-export const createAccount = catchAsync(async (req, res, next) => {
+exports.getAllAccounts = getAll(Account);
+exports.updateAccount = updateOne(Account);
+exports.deleteAccount = deleteOne(Account);
+exports.createAccount = catchAsync(async (req, res, next) => {
   // 3) Send it to user's email
   const resetURL = 'http://127.0.0.1:5173/sign-in/admin';
 
@@ -171,7 +163,6 @@ export const createAccount = catchAsync(async (req, res, next) => {
   );
   console.log('Gửi email thành công');
   const doc = await Account.create(req.body);
-
   return res.status(201).json({
     status: 'success',
     data: {

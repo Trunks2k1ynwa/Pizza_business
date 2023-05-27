@@ -1,5 +1,5 @@
-import { Router } from 'express';
-import {
+const { Router } = require('express');
+const {
   getAllAccounts,
   getAccount,
   updateAccount,
@@ -10,8 +10,8 @@ import {
   updateMe,
   getMyOrder,
   updateInfoMe,
-} from './../controllers/accountController.js';
-import {
+} = require('./../controllers/accountController');
+const {
   forgotPassword,
   login,
   signup,
@@ -20,7 +20,7 @@ import {
   resetPassword,
   restrictTo,
   updatePassword,
-} from '../controllers/authController.js';
+} = require('../controllers/authController');
 
 const router = Router();
 
@@ -57,4 +57,4 @@ router
   .patch(updateAccount)
   .delete(deleteAccount);
 
-export default router;
+module.exports = router;

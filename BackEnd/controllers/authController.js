@@ -1,11 +1,11 @@
-/* eslint-disable no-undef */
-import crypto from 'crypto';
-import { promisify } from 'util';
-import jwt from 'jsonwebtoken';
-import catchAsync from './../utils/catchAsync.js';
-import AppError from './../utils/appError.js';
-import Account from '../models/accountModel.js';
-import Email from '../utils/email.js';
+const crypto = require('crypto');
+const { promisify } = require('util');
+const jwt = require('jsonwebtoken');
+const catchAsync = require('../utils/catchAsync');
+const AppError = require('../utils/appError');
+const Account = require('../models/accountModel');
+const Email = require('../utils/email');
+const { default: tranposter } = require('../utils/nodemailer');
 
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -34,7 +34,7 @@ const createSendToken = (user, statusCode, req, res) => {
   });
 };
 
-export const signup = catchAsync(async (req, res) => {
+exports.signup = catchAsync(async (req, res) => {
   const newUser = await Account.create({
     username: req.body.username,
     email: req.body.email,
@@ -44,7 +44,7 @@ export const signup = catchAsync(async (req, res) => {
   createSendToken(newUser, 201, req, res);
 });
 
-export const login = catchAsync(async (req, res, next) => {
+exports.login = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
 
   // 1) Check if email and password exist
@@ -61,7 +61,7 @@ export const login = catchAsync(async (req, res, next) => {
   createSendToken(user, 200, req, res);
 });
 
-export const logout = (req, res) => {
+exports.logout = (req, res) => {
   res.cookie('jwt', 'loggedout', {
     expires: new Date(Date.now() + 10 * 1000),
     httpOnly: true,
@@ -70,7 +70,7 @@ export const logout = (req, res) => {
   res.status(200).json({ status: 'success' });
 };
 
-export const protect = catchAsync(async (req, res, next) => {
+exports.protect = catchAsync(async (req, res, next) => {
   // 1) Getting token and check of it's there
   let token = '';
   if (
@@ -110,7 +110,7 @@ export const protect = catchAsync(async (req, res, next) => {
   next();
 });
 // Only for rendered pages, no errors!
-export const isLoggedIn = async (req, res, next) => {
+exports.isLoggedIn = async (req, res, next) => {
   if (req.cookies.jwt) {
     try {
       // 1) verify token
@@ -120,7 +120,7 @@ export const isLoggedIn = async (req, res, next) => {
       );
 
       // 2) Check if user still exists
-      const currentUser = await User.findById(decoded.id);
+      const currentUser = await Account.findById(decoded.id);
       if (!currentUser) {
         return next();
       }
@@ -140,7 +140,7 @@ export const isLoggedIn = async (req, res, next) => {
   next();
 };
 
-export const restrictTo = (...roles) => {
+exports.restrictTo = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
       return next(
@@ -151,7 +151,7 @@ export const restrictTo = (...roles) => {
   };
 };
 
-export const forgotPassword = catchAsync(async (req, res, next) => {
+exports.forgotPassword = catchAsync(async (req, res, next) => {
   // 1) Get user based on POSTed email
   const account = await Account.findOne({ email: req.body.email });
   if (!account) {
@@ -195,7 +195,7 @@ export const forgotPassword = catchAsync(async (req, res, next) => {
   }
 });
 
-export const resetPassword = catchAsync(async (req, res, next) => {
+exports.resetPassword = catchAsync(async (req, res, next) => {
   // 1) Get user based on the token
   const hashedToken = crypto
     .createHash('sha256')
@@ -222,7 +222,7 @@ export const resetPassword = catchAsync(async (req, res, next) => {
   createSendToken(user, 200, req, res);
 });
 
-export const updatePassword = catchAsync(async (req, res, next) => {
+exports.updatePassword = catchAsync(async (req, res, next) => {
   // 1) Get user from collection
   const user = await Account.findById(req.user.id).select('+password');
 

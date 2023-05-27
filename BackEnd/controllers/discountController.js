@@ -1,14 +1,14 @@
-import Discount from '../models/discountModel.js';
-import {
+const Discount = require('../models/discountModel');
+const {
   createOne,
   deleteOne,
   getAll,
   getOne,
   updateOne,
-} from './handlerFactory.js';
+} = require('./handlerFactory');
 
-export const getAllDiscount = getAll(Discount);
-export const getDiscount = getOne(Discount);
-export const createDiscount = createOne(Discount);
-export const updateDiscount = updateOne(Discount);
-export const deleteDiscount = deleteOne(Discount);
+exports.getAllDiscount = getAll(Discount);
+exports.getDiscount = getOne(Discount);
+exports.createDiscount = createOne(Discount);
+exports.updateDiscount = updateOne(Discount);
+exports.deleteDiscount = deleteOne(Discount);

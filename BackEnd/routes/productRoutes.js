@@ -1,12 +1,12 @@
-import express from 'express';
-import {
+const express = require('express');
+const {
   createProduct,
   deleteProduct,
   getAllProducts,
   getProduct,
   updateProduct,
-} from '../controllers/productController.js';
-import { protect, restrictTo } from '../controllers/authController.js';
+} = require('../controllers/productController');
+const { protect, restrictTo } = require('../controllers/authController');
 
 const router = express.Router();
 
@@ -22,4 +22,4 @@ router
   .patch(updateProduct)
   .delete(deleteProduct);
 
-export default router;
+module.exports = router;

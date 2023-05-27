@@ -1,5 +1,5 @@
-import mongoose from 'mongoose';
-import slugify from 'slugify';
+const mongoose = require('mongoose');
+const slugify = require('slugify');
 
 const categorySchema = new mongoose.Schema(
   {
@@ -38,10 +38,10 @@ const categorySchema = new mongoose.Schema(
   },
 );
 // DOCUMENT MIDDLEWARE: runs before .save() and .create()
-categorySchema.pre('save', function (next) {
+categorySchema.pre('save', function(next) {
   this.slug = slugify(this.name, { lower: true });
   next();
 });
 
 const Category = mongoose.model('Category', categorySchema);
-export default Category;
+module.exports = Category;

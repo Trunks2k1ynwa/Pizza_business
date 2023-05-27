@@ -1,12 +1,12 @@
-/* eslint-disable no-undef */
-import nodemailer from 'nodemailer';
-import { google } from 'googleapis';
-import dotenv from 'dotenv';
+/* eslint-disable node/no-extraneous-require */
+const nodemailer = require('nodemailer');
+const { google } = require('googleapis');
+const dotenv = require('dotenv');
 
 dotenv.config({ path: './config.env' });
 const appPassword = 'omzoccguehzfcuhs';
-const oAuth2 = google.auth.OAuth2;
-const oAuth2Client = new oAuth2(
+const { OAuth2 } = google.auth;
+const oAuth2Client = new OAuth2(
   process.env.CLIENT_ID,
   process.env.CLIENT_SECRET,
   process.env.REDIRECT_URL,
@@ -40,4 +40,4 @@ const tranposter = nodemailer.createTransport({
     accessToken,
   },
 });
-export default tranposter;
+module.exports = tranposter;

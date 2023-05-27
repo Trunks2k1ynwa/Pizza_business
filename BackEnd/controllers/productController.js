@@ -1,14 +1,14 @@
-import Product from '../models/productModel.js';
-import {
+const Product = require('../models/productModel');
+const {
   createOne,
   deleteOne,
   getAll,
   getOne,
   updateOne,
-} from '../controllers/handlerFactory.js';
+} = require('../controllers/handlerFactory');
 
-export const getAllProducts = getAll(Product);
-export const getProduct = getOne(Product, { path: 'category' });
-export const createProduct = createOne(Product);
-export const updateProduct = updateOne(Product);
-export const deleteProduct = deleteOne(Product);
+exports.getAllProducts = getAll(Product);
+exports.getProduct = getOne(Product, { path: 'category' });
+exports.createProduct = createOne(Product);
+exports.updateProduct = updateOne(Product);
+exports.deleteProduct = deleteOne(Product);

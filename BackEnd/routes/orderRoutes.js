@@ -1,7 +1,7 @@
-import { Router } from 'express';
-import { protect, restrictTo } from '../controllers/authController.js';
-import { getMe } from '../controllers/accountController.js';
-import {
+const { Router } = require('express');
+const { protect, restrictTo } = require('../controllers/authController');
+const { getMe } = require('../controllers/accountController');
+const {
   createOrder,
   deleteMyOrder,
   deleteOrder,
@@ -9,7 +9,7 @@ import {
   getOrder,
   updateMyOrder,
   updateOrder,
-} from '../controllers/oderController.js';
+} = require('../controllers/oderController');
 
 const router = Router();
 
@@ -28,4 +28,4 @@ router
   .get(getOrder)
   .delete(restrictTo('admin', 'seller'), deleteOrder);
 
-export default router;
+module.exports = router;

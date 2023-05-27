@@ -1,5 +1,5 @@
-import { Router } from 'express';
-import {
+const { Router } = require('express');
+const {
   updateMyCart,
   createCart,
   deleteCart,
@@ -9,9 +9,9 @@ import {
   updateCart,
   deleteProductCart,
   deleteMyCart,
-} from '../controllers/cartControllers.js';
-import { getMe } from '../controllers/accountController.js';
-import { protect, restrictTo } from '../controllers/authController.js';
+} = require('../controllers/cartControllers');
+const { getMe } = require('../controllers/accountController');
+const { protect, restrictTo } = require('../controllers/authController');
 
 const router = Router();
 
@@ -36,4 +36,4 @@ router
   .get(getCart)
   .delete(restrictTo('user', 'admin', 'editor'), deleteCart);
 
-export default router;
+module.exports = router;

@@ -1,7 +1,6 @@
-/* eslint-disable no-undef */
-import app from './app.js';
-import dotenv from 'dotenv';
-import mongoose from 'mongoose';
+const dotenv = require('dotenv');
+const mongoose = require('mongoose');
+const app = require('./app');
 
 //Connect mongodb Atlas
 dotenv.config({ path: './config.env' });

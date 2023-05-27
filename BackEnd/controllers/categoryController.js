@@ -1,14 +1,14 @@
-import Category from '../models/categoryModel.js';
-import {
+const Category = require('../models/categoryModel');
+const {
   createOne,
   deleteOne,
   getAll,
   getOne,
   updateOne,
-} from '../controllers/handlerFactory.js';
+} = require('../controllers/handlerFactory');
 
-export const getAllCategories = getAll(Category);
-export const getCategory = getOne(Category);
-export const updateCategory = updateOne(Category);
-export const deleteCategory = deleteOne(Category);
-export const createCategory = createOne(Category);
+exports.getAllCategories = getAll(Category);
+exports.getCategory = getOne(Category);
+exports.updateCategory = updateOne(Category);
+exports.deleteCategory = deleteOne(Category);
+exports.createCategory = createOne(Category);

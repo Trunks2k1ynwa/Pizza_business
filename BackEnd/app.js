@@ -1,18 +1,17 @@
-/* eslint-disable no-undef */
-import express from 'express';
-import xss from 'xss-clean';
-import cors from 'cors';
-import helmet from 'helmet';
-import morgan from 'morgan';
-import mongoSanitize from 'express-mongo-sanitize';
-import globalErrorHandler from './controllers/errorController.js';
-import cookieParser from 'cookie-parser';
-import AppError from './utils/appError.js';
-import productRouter from './routes/productRoutes.js';
-import categoryRouter from './routes/categoryRoutes.js';
-import accountRouter from './routes/accountRoutes.js';
-import cartRouter from './routes/cartRoutes.js';
-import orderRouter from './routes/orderRoutes.js';
+const express = require('express');
+const xss = require('xss-clean');
+const cors = require('cors');
+const helmet = require('helmet');
+const mongoSanitize = require('express-mongo-sanitize');
+const cookieParser = require('cookie-parser');
+const productRouter = require('./routes/productRoutes');
+const globalErrorHandler = require('./controllers/errorController');
+const AppError = require('./utils/appError');
+const categoryRouter = require('./routes/categoryRoutes');
+const accountRouter = require('./routes/accountRoutes');
+const cartRouter = require('./routes/cartRoutes');
+const orderRouter = require('./routes/orderRoutes');
+
 const app = express();
 
 // Implement CORS
@@ -43,4 +42,4 @@ app.all('*', (req, res, next) => {
 });
 
 app.use(globalErrorHandler);
-export default app;
+module.exports = app;

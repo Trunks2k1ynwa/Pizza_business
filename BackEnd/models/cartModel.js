@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const cartSchema = new mongoose.Schema(
   {
@@ -39,7 +39,7 @@ cartSchema.pre(/^find/, function(next) {
 // Tạo trường virtuals "totalPrice"
 cartSchema.virtual('totalPrice').get(function() {
   return this.products.reduce(
-    (total, item) => total + item.product?.price * item.number,
+    (total, item) => total + item.product.price * item.number,
     0,
   );
 });
@@ -52,4 +52,4 @@ cartSchema.virtual('totalPrice').get(function() {
 // });
 
 const Cart = mongoose.model('Cart', cartSchema);
-export default Cart;
+module.exports = Cart;

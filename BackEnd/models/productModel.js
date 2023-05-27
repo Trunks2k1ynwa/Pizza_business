@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const productSchema = new mongoose.Schema(
   {
@@ -15,7 +15,7 @@ const productSchema = new mongoose.Schema(
     description: { type: String },
     category: { type: mongoose.Schema.ObjectId, ref: 'Category' },
     slug: { type: String },
-    discount: { type: Number, default: 0 },
+    discount: { type: mongoose.Schema.ObjectId, ref: 'Discount' },
     sold: { type: Number, default: 0 },
     number: { type: Number, default: 30 },
     status: {
@@ -44,6 +44,7 @@ const productSchema = new mongoose.Schema(
       },
     ],
   },
+  { id: false },
   {
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
@@ -63,4 +64,4 @@ productSchema.pre('save', function(next) {
   next();
 });
 const Product = mongoose.model('Product', productSchema);
-export default Product;
+module.exports = Product;
