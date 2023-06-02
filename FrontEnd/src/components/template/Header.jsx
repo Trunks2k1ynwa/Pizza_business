@@ -58,7 +58,7 @@ const Header = () => {
       title: 'Trang chủ',
     },
     {
-      url: '/product',
+      url: '/products',
       title: 'Sản phẩm',
     },
     {

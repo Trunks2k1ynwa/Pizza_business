@@ -12,12 +12,23 @@ const productSchema = new mongoose.Schema(
       required: [true, 'A product must have description'],
     },
     price: { type: Number, required: [true, 'A product must have price'] },
-    description: { type: String },
-    category: { type: mongoose.Schema.ObjectId, ref: 'Category' },
-    slug: { type: String },
+    description: String,
+    instruction: String,
+    features: [String],
+    category: {
+      type: mongoose.Schema.ObjectId,
+      ref: 'Category',
+      required: [true, 'Product must have a Category.'],
+    },
     discount: { type: mongoose.Schema.ObjectId, ref: 'Discount' },
-    sold: { type: Number, default: 0 },
-    number: { type: Number, default: 30 },
+    slug: String,
+    sold: {
+      type: Number,
+      required: true,
+      default: 0,
+      min: [0, 'Sold must be above 0'],
+    },
+    number: { type: Number, min: [0, 'Number must be above 0'], default: 30 },
     status: {
       type: String,
       enum: ['inactive', 'active'],
@@ -44,7 +55,6 @@ const productSchema = new mongoose.Schema(
       },
     ],
   },
-  { id: false },
   {
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
@@ -52,13 +62,13 @@ const productSchema = new mongoose.Schema(
 );
 productSchema.pre(/^find/, function(next) {
   this.populate({
-    path: 'category',
-    select: ['name', 'status', 'id'],
+    path: 'discount',
+    select: 'code value minimumPurchase',
   });
   next();
 });
 productSchema.pre('save', function(next) {
-  if (this.number === this.sold) {
+  if (this.number === 0) {
     this.status = 'inactive';
   }
   next();

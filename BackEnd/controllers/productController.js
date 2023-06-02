@@ -8,7 +8,10 @@ const {
 } = require('../controllers/handlerFactory');
 
 exports.getAllProducts = getAll(Product);
-exports.getProduct = getOne(Product, { path: 'category' });
+exports.getProduct = getOne(Product, {
+  path: 'category',
+  select: 'name description',
+});
 exports.createProduct = createOne(Product);
 exports.updateProduct = updateOne(Product);
 exports.deleteProduct = deleteOne(Product);

@@ -31,6 +31,7 @@ import AddressMe from '../modules/me/AddressMe';
 import AccountLayOut from '../layouts/AccountLayOut';
 import SignInAdminPage from '../pages/SignInAdminPage.jsx';
 import LearnHook from '../components/template/LearnHook.jsx';
+import ProductsPage from '../pages/ProductsPage.jsx';
 
 const Routes = () => {
   const ElementRoutes = useRoutes([
@@ -41,6 +42,10 @@ const Routes = () => {
     {
       path: 'about',
       element: <AboutPage />,
+    },
+    {
+      path: 'products',
+      element: <ProductsPage />,
     },
     {
       path: 'hook',

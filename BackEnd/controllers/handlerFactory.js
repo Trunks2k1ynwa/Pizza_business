@@ -4,7 +4,6 @@ const catchAsync = require('../utils/catchAsync');
 
 exports.deleteOne = (Model) => {
   return catchAsync(async (req, res, next) => {
-    console.log(req.params.id);
     const doc = await Model.findByIdAndDelete(req.params.id);
 
     if (!doc) {
@@ -39,12 +38,9 @@ exports.updateOne = (Model) => {
 exports.createOne = (Model) =>
   catchAsync(async (req, res, next) => {
     const doc = await Model.create(req.body);
-
     res.status(201).json({
       status: 'success',
-      data: {
-        data: doc,
-      },
+      data: doc,
     });
   });
 
@@ -60,9 +56,7 @@ exports.getOne = (Model, popOptions) =>
 
     res.status(200).json({
       status: 'success',
-      data: {
-        data: doc,
-      },
+      data: doc,
     });
   });
 exports.getAll = (Model) => {
@@ -70,18 +64,22 @@ exports.getAll = (Model) => {
     // To allow for nested GET reviews on tour (hack)
     let filter = {};
     if (req.params.tourId) filter = { tour: req.params.tourId };
-
-    const features = new APIFeatures(Model.find(filter), req.query)
+    const totalDocuments = await Model.find(filter);
+    const features = new APIFeatures(
+      Model.find(filter),
+      req.query,
+      totalDocuments.length,
+    )
       .filter()
       .sort()
       .limitFields()
       .paginate();
-    // const doc = await features.query.explain();
     const doc = await features.query;
-
     // SEND RESPONSE
     res.status(200).json({
       status: 'success',
+      nextPage: features.nextPage,
+      previousPage: features.previousPage,
       results: doc.length,
       data: doc,
     });

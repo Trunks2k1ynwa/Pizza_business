@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+const mongoose = require('mongoose');
 const Cart = require('../models/cartModel');
 const Product = require('../models/productModel');
 const AppError = require('../utils/appError');
@@ -11,14 +12,12 @@ const {
   updateOne,
 } = require('./handlerFactory');
 
+const { ObjectId } = mongoose.Types;
+
 exports.getMyCart = catchAsync(async (req, res, next) => {
   const myCart = await Cart.findOne({ account: req.params.id });
   if (!myCart) {
-    // return next(new AppError('No document found with that ID account', 404));
-    res.status(200).json({
-      status: 'success',
-      message: 'Looklike your cart is empty',
-    });
+    return next(new AppError('No Cart found with that ID account', 404));
   }
 
   res.status(200).json({
@@ -27,7 +26,7 @@ exports.getMyCart = catchAsync(async (req, res, next) => {
   });
 });
 exports.updateMyCart = catchAsync(async (req, res, next) => {
-  const { productId, number } = req.body;
+  const { productId, amount } = req.body;
   const accountId = req.params.id;
   const { type } = req.body;
 
@@ -41,80 +40,73 @@ exports.updateMyCart = catchAsync(async (req, res, next) => {
   if (!cart) {
     const newCart = await Cart.create({
       account: accountId,
-      products: [{ product: productId, number: number }],
+      products: [{ product: productId, amount: amount }],
     });
     return res.status(200).json({
       status: 'success',
       data: newCart,
     });
   }
-
+  //Cart exist
   const existingProduct = cart.products.findIndex((p) => {
-    return p.product._id === productId;
+    return p.product._id.equals(new ObjectId(productId));
   });
   if (type === 'increase') {
     cart = await Cart.findOneAndUpdate(
       { account: accountId, 'products.product': productId },
       {
         $set: {
-          'products.$.number': cart.products[existingProduct].number + 1,
+          'products.$.amount': cart.products[existingProduct].amount + 1,
         },
       },
       { new: true },
-    ).populate({
-      path: 'products.product',
-      select: ['title', 'overview', 'price', 'images'],
-    });
+    );
   } else if (type === 'decrease') {
-    if (cart.products[existingProduct].number === 1) {
+    if (cart.products[existingProduct].amount === 1) {
       cart = await Cart.findOneAndUpdate(
         { account: accountId },
         { $pull: { products: { product: productId } } },
         { new: true },
-      ).populate({
-        path: 'products.product',
-        select: ['title', 'overview', 'price', 'images'],
-      });
+      );
     } else {
       cart = await Cart.findOneAndUpdate(
         { account: accountId, 'products.product': productId },
         {
           $set: {
-            'products.$.number': cart.products[existingProduct].number - 1,
+            'products.$.amount': cart.products[existingProduct].amount - 1,
           },
         },
         { new: true },
-      ).populate({
-        path: 'products.product',
-        select: ['title', 'overview', 'price', 'images'],
-      });
+      );
     }
-  } else if (existingProduct !== -1 && number > 0) {
+  }
+  // Product exist in cart , plus amount
+  else if (existingProduct !== -1 && amount > 0) {
     cart = await Cart.findOneAndUpdate(
       { account: accountId, 'products.product': productId },
       {
         $set: {
-          'products.$.number': number + cart.products[existingProduct].number,
+          'products.$.amount': amount + cart.products[existingProduct].amount,
         },
       },
       { new: true },
-    ).populate({
-      path: 'products.product',
-      select: ['title', 'overview', 'price', 'images'],
-    });
-  } else {
-    cart.products.push({ product: productId, number: number });
-    await cart.save();
-    await cart.populate({
-      path: 'products.product',
-      select: ['title', 'overview', 'price', 'images'],
-    });
+    );
   }
+  // Product  not exist in cart , add product in cart
+  else {
+    cart.products.push({ product: productId, amount: amount });
+    await cart.save();
+  }
+  await cart.populate({
+    path: 'products.product',
+    select: ['title', 'overview', 'price', 'images'],
+  });
   return res.status(200).json({
     status: 'success',
     data: cart,
   });
 });
+
 exports.deleteProductCart = catchAsync(async (req, res, next) => {
   const { productId } = req.params;
   const accountId = req.params.id;
@@ -125,7 +117,7 @@ exports.deleteProductCart = catchAsync(async (req, res, next) => {
   );
   return res.status(200).json({
     status: 'success',
-    data: cart,
+    data: null,
   });
 });
 

@@ -23,3 +23,5 @@ router
   .get(getDiscount)
   .delete(deleteDiscount)
   .patch(updateDiscount);
+
+module.exports = router;

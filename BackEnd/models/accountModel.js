@@ -67,13 +67,12 @@ const accountSchema = new mongoose.Schema({
   addressDetail: {
     type: String,
   },
-  history: [
+  orders: [
     {
-      order: {
-        type: mongoose.Schema.ObjectId,
-        ref: 'Order',
-        required: true,
-      },
+      type: mongoose.Schema.ObjectId,
+      ref: 'Order',
+      required: true,
+      select: false,
     },
   ],
 });

@@ -23,7 +23,7 @@ const discountSchema = new Schema(
     },
     maximumUses: {
       type: Number,
-      default: null,
+      default: 100,
     },
     startDate: {
       type: Date,

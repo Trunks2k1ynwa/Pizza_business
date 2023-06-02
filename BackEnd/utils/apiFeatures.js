@@ -1,7 +1,8 @@
 class APIFeatures {
-  constructor(query, queryString) {
+  constructor(query, queryString, totalDocuments) {
     this.query = query;
     this.queryString = queryString;
+    this.totalDocuments = totalDocuments;
   }
 
   filter() {
@@ -23,7 +24,7 @@ class APIFeatures {
       const sortBy = this.queryString.sort.split(',').join(' ');
       this.query = this.query.sort(sortBy);
     } else {
-      this.query = this.query.sort('-createdAt');
+      this.query = this.query.sort('_id');
     }
 
     return this;
@@ -34,9 +35,8 @@ class APIFeatures {
       const fields = this.queryString.fields.split(',').join(' ');
       this.query = this.query.select(fields);
     } else {
-      this.query = this.query.select('-__v');
+      this.query = this.query.sort('_id');
     }
-
     return this;
   }
 
@@ -44,9 +44,13 @@ class APIFeatures {
     const page = this.queryString.page * 1 || 1;
     const limit = this.queryString.limit * 1 || 100;
     const skip = (page - 1) * limit;
-
+    if (page * limit < this.totalDocuments) {
+      this.nextPage = page + 1;
+    }
+    if (page > 1) {
+      this.previousPage = page - 1;
+    }
     this.query = this.query.skip(skip).limit(limit);
-
     return this;
   }
 }

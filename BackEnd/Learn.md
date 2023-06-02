@@ -55,7 +55,31 @@ nameSchema.path('fieldName').validate(function (value,err) {
 ### timestamps
 -  Tùy chọn timestamps được sử dụng để tự động thêm hai trường createdAt và updatedAt vào mỗi bản ghi trong cơ sở dữ liệu. Trường createdAt sẽ được tự động gán giá trị thời điểm tạo bản ghi, và trường updatedAt sẽ được tự động cập nhật giá trị thời điểm khi bản ghi được cập nhật.
 # Schema type
-- type:String,Number,Date
+String
+Number
+Date
+Buffer
+Boolean
+Mixed
+ObjectId
+Array
+Decimal128
+Map
+Schema
+UUID
+BigInt
+## SchemaType Options
+- type
+- required
+- default
+- select
+- validate
+- get
+- set
+- alias
+- immutable
+- transform
+
 - required:[true,'Lỗi khi thiếu trường này']
 - trim
 - unique

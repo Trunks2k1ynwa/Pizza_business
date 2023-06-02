@@ -8,8 +8,7 @@ const {
   getMe,
   createAccount,
   updateMe,
-  getMyOrder,
-  updateInfoMe,
+  // updateInfoMe,
 } = require('./../controllers/accountController');
 const {
   forgotPassword,
@@ -41,8 +40,7 @@ router
   .patch(getMe, updateMe)
   .delete(getMe, deleteMe);
 
-router.route('/updateInfoMe').patch(getMe, updateInfoMe);
-router.route('/orderme').get(getMe, getMyOrder);
+// router.route('/updateInfoMe').patch(getMe, updateInfoMe);
 
 router.use(restrictTo('admin'));
 

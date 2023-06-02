@@ -8,7 +8,7 @@ const cartSchema = new mongoose.Schema(
           type: mongoose.Schema.ObjectId,
           ref: 'Product',
         },
-        number: {
+        amount: {
           type: Number,
           default: 1,
         },
@@ -39,17 +39,10 @@ cartSchema.pre(/^find/, function(next) {
 // Tạo trường virtuals "totalPrice"
 cartSchema.virtual('totalPrice').get(function() {
   return this.products.reduce(
-    (total, item) => total + item.product.price * item.number,
+    (total, item) => total + item.product.price * item.amount,
     0,
   );
 });
-
-// cartSchema.pre(/^find/, function(next) {
-//   this.populate({
-//     path: 'account',
-//   });
-//   next();
-// });
 
 const Cart = mongoose.model('Cart', cartSchema);
 module.exports = Cart;

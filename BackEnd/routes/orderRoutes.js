@@ -2,13 +2,14 @@ const { Router } = require('express');
 const { protect, restrictTo } = require('../controllers/authController');
 const { getMe } = require('../controllers/accountController');
 const {
-  createOrder,
   deleteMyOrder,
   deleteOrder,
   getAllOrder,
   getOrder,
   updateMyOrder,
   updateOrder,
+  getMyOrder,
+  createMyOrder,
 } = require('../controllers/oderController');
 
 const router = Router();
@@ -16,12 +17,14 @@ const router = Router();
 // Protect all routes after this middleware
 router.use(protect);
 
-router.route('/me').patch(getMe, updateMyOrder);
-router.route('/me/:orderId').delete(getMe, deleteMyOrder);
 router
-  .route('/')
-  .get(getAllOrder)
-  .post(createOrder);
+  .route('/me')
+  .get(getMe, getMyOrder)
+  .patch(getMe, updateMyOrder)
+  .post(getMe, createMyOrder);
+router.route('/me/:orderId').delete(getMe, deleteMyOrder);
+router.route('/').get(getAllOrder);
+
 router
   .route('/:id')
   .patch(restrictTo('admin', 'seller'), updateOrder)

@@ -4,55 +4,6 @@ const catchAsync = require('../utils/catchAsync');
 const Email = require('../utils/email');
 const { deleteOne, getAll, getOne, updateOne } = require('./handlerFactory');
 
-const filterObj = (obj, ...allowedFields) => {
-  const newObj = {};
-  Object.keys(obj).forEach((el) => {
-    if (allowedFields.includes(el)) newObj[el] = obj[el];
-  });
-  return newObj;
-};
-
-exports.updateInfoMe = catchAsync(async (req, res, next) => {
-  // 1) Create error if user POSTs password data
-  if (req.body.password || req.body.passwordConfirm) {
-    return next(
-      new AppError(
-        'This route is not for password updates. Please use /updateMyPassword.',
-        400,
-      ),
-    );
-  }
-
-  // 2) Filtered out unwanted fields names that are not allowed to be updated
-  const filteredBody = filterObj(
-    req.body,
-    'username',
-    'address',
-    'addressDetail',
-    'phoneNumber',
-    'photo',
-    'history',
-  );
-  if (req.file) filteredBody.photo = req.file.filename;
-
-  // 3) Update user document
-  const updatedUser = await Account.findByIdAndUpdate(
-    req.user.id,
-    filteredBody,
-    {
-      new: true,
-      runValidators: true,
-    },
-  );
-
-  return res.status(200).json({
-    status: 'success',
-    data: {
-      user: updatedUser,
-    },
-  });
-});
-
 exports.updateMe = catchAsync(async (req, res, next) => {
   // 1) Create error if user POSTs password data
   if (req.body.password || req.body.passwordConfirm) {
@@ -65,44 +16,29 @@ exports.updateMe = catchAsync(async (req, res, next) => {
   }
 
   // 2) Filtered out unwanted fields names that are not allowed to be updated
-  const filteredBody = filterObj(
-    req.body,
-    'username',
-    'address',
-    'addressDetail',
-    'phoneNumber',
-    'photo',
-    'history',
-  );
-  if (req.file) filteredBody.photo = req.file.filename;
-  if (req.body.history)
-    filteredBody.history = [
-      ...filteredBody.history,
-      { cart: req.body.history },
-    ];
+  // if (req.body.orders)
+  // filteredBody.orders = [...filteredBody.orders, { cart: req.body.orders }];
 
   // 3) Update user document
-  const updatedUser = await Account.findByIdAndUpdate(
-    req.user.id,
-    filteredBody,
-    {
-      new: true,
-      runValidators: true,
-    },
-  );
-  const updatedAccountHistory = [
-    ...updatedUser.history,
-    { order: req.body.orderId },
-  ];
-  await Account.findByIdAndUpdate(
-    req.user.id,
-    { history: updatedAccountHistory },
-    { new: true },
-  );
+  const updatedUser = await Account.findByIdAndUpdate(req.user.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
+  // const updatedAccountHistory = [
+  //   ...updatedUser.orders,
+  //   {
+  //     order: req.body.order,
+  //   },
+  // ];
+  // await Account.findByIdAndUpdate(
+  //   req.user.id,
+  //   { orders: updatedAccountHistory },
+  //   { new: true },
+  // );
   return res.status(200).json({
     status: 'success',
     data: {
-      user: updatedAccountHistory,
+      user: updatedUser,
     },
   });
 });
@@ -120,36 +56,7 @@ exports.deleteMe = catchAsync(async (req, res) => {
   });
 });
 
-exports.getAccount = getOne(Account, {
-  path: 'history.order',
-  select: ['products', 'totalMoney', 'status'],
-});
-
-exports.getMyOrder = catchAsync(async (req, res, next) => {
-  let query = Account.findById(req.params.id);
-  query = query.populate({
-    path: 'history.order',
-    select: [
-      'products',
-      'totalMoney',
-      'status',
-      'payment',
-      'createdAt',
-      '_id',
-      '-account',
-    ],
-  });
-  const doc = await query;
-
-  if (!doc) {
-    return next(new AppError('No document found with that ID', 404));
-  }
-
-  res.status(200).json({
-    status: 'success',
-    data: doc.history,
-  });
-});
+exports.getAccount = getOne(Account);
 
 exports.getAllAccounts = getAll(Account);
 exports.updateAccount = updateOne(Account);

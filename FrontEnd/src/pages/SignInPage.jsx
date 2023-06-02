@@ -1,18 +1,26 @@
+/* eslint-disable react-hooks/rules-of-hooks */
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/no-unknown-property */
-import { memo } from 'react';
+import { memo, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
-import http from '../services/http.js';
 import { showAlert } from '../../alerts.js';
 import { useDispatch } from 'react-redux';
-import { setAccount } from '../../redux/slices/accountSlice.jsx';
+import {
+  QueryClient,
+  useIsFetching,
+  useQueries,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import Button from '../components/atoms/Button.jsx';
 import { Link } from 'react-router-dom';
+import http from '../services/http.js';
+import { result } from 'lodash';
 
 const SignInPage = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
+  // const dispatch = useDispatch();
+  // const navigate = useNavigate();
   const {
     handleSubmit,
     register,
@@ -24,41 +32,40 @@ const SignInPage = () => {
       password: '',
     },
   });
-  const onSubmit = async (data) => {
-    try {
-      const response = await http.post('accounts/login', data);
-
-      const { token } = response.data;
-      const expirationTime = new Date(Date.now() + 24 * 60 * 60 * 1000 * 60); // Hết hạn sau 60 giờ
-      document.cookie = `jwt=${token}; expires=${expirationTime.toUTCString()}; path=/`;
-
-      const account = response.data.data.user;
-      const getData = async () => {
-        try {
-          const response = await http.get('accounts/me', {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          const accountMe = response.data;
-          dispatch(setAccount(accountMe.data));
-        } catch (err) {
-          console.log(err);
-        }
-      };
-      getData();
-      dispatch(setAccount({ token, ...account }));
-      if (response.data.status === 'success') {
-        showAlert('success', 'Đăng nhập tài khoản thành công!');
-        window.setTimeout(() => {
-          navigate('/');
-        }, 1000);
-      }
-    } catch (error) {
-      showAlert('error', 'Email hoặc mật khẩu chưa chính xác! ');
-    }
-    reset();
+  const onSubmit = async () => {
+    // try {
+    //   const response = await http.post('accounts/login', data);
+    //   const { token } = response.data;
+    //   const expirationTime = new Date(Date.now() + 24 * 60 * 60 * 1000 * 60); // Hết hạn sau 60 giờ
+    //   document.cookie = `jwt=${token}; expires=${expirationTime.toUTCString()}; path=/`;
+    //   const account = response.data.data.user;
+    //   const getData = async () => {
+    //     try {
+    //       const response = await http.get('accounts/me', {
+    //         headers: {
+    //           Authorization: `Bearer ${token}`,
+    //         },
+    //       });
+    //       const accountMe = response.data;
+    //       dispatch(setAccount(accountMe.data));
+    //     } catch (err) {
+    //       console.log(err);
+    //     }
+    //   };
+    //   getData();
+    //   dispatch(setAccount({ token, ...account }));
+    //   if (response.data.status === 'success') {
+    //     showAlert('success', 'Đăng nhập tài khoản thành công!');
+    //     window.setTimeout(() => {
+    //       navigate('/');
+    //     }, 1000);
+    //   }
+    // } catch (error) {
+    //   showAlert('error', 'Email hoặc mật khẩu chưa chính xác! ');
+    // }
+    // reset();
   };
+
   return (
     <section className='center-main text-primary h-[95vh]'>
       <div className=' center-both px-[4rem] flex-[3_3_0%]'>
@@ -115,8 +122,15 @@ const SignInPage = () => {
                 Quên mật khẩu
               </Link>
             </div>
-            <Button className='w-full my-10' type='submit'>
-              ĐĂNG NHẬP
+            <Button className='w-full my-5' type='submit'>
+              Đăng nhập
+            </Button>
+            <div className='text-center'>
+              <label htmlFor=''>Hoặc</label>
+            </div>
+            <Button className='w-full my-5 bg-white'>
+              <i className='fa-brands mx-5 fa-google' />
+              <label htmlFor=''>Google</label>
             </Button>
           </form>
         </div>
