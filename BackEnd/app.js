@@ -10,17 +10,36 @@ const AppError = require('./utils/appError');
 const categoryRouter = require('./routes/categoryRoutes');
 const accountRouter = require('./routes/accountRoutes');
 const cartRouter = require('./routes/cartRoutes');
+const authRouter = require('./routes/authRoutes');
 const orderRouter = require('./routes/orderRoutes');
+const cookieSession = require('cookie-session');
 const discountRouter = require('./routes/discountRoutes');
+const passport = require('passport');
+const passportSetup = require('./utils/passport');
 
 const app = express();
 
 // Implement CORS
-app.use(cors());
-app.options('*', cors());
-app.use(cookieParser());
-app.use(helmet());
+app.use(
+  cors({
+    origin: 'http://127.0.0.1:5173',
+    methods: 'GET,POST,PATCH,DELETE',
+    credentials: true,
+  }),
+);
 
+app.use(cookieParser('secret'));
+app.use(
+  cookieSession({
+    name: 'session',
+    keys: ['lama'],
+    maxAge: 24 * 60 * 60 * 100,
+  }),
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(helmet());
 app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 
@@ -35,6 +54,7 @@ app.use((req, res, next) => {
 app.use('/api/v1/products', productRouter);
 app.use('/api/v1/categories', categoryRouter);
 app.use('/api/v1/accounts', accountRouter);
+app.use('/auth', authRouter);
 app.use('/api/v1/carts', cartRouter);
 app.use('/api/v1/orders', orderRouter);
 app.use('/api/v1/discounts', discountRouter);
