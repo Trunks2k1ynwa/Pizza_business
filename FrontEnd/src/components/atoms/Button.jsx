@@ -12,7 +12,25 @@ const ButtonStyles = styled.button`
   padding: 1.3rem 2rem;
   border-radius: 5px;
   text-align: center;
+  height: fit-content;
+  cursor: pointer;
   background-color: ${(props) => props.theme.primary};
+  ${(props) =>
+    props.kind === 'google' &&
+    css`
+      color: ${(props) => props.theme.white};
+      background-color: #3f85f3;
+      border: 1px solid white;
+      padding: 10px 10px;
+    `};
+  ${(props) =>
+    props.kind === 'facebook' &&
+    css`
+      color: ${(props) => props.theme.white};
+      background-color: #2374e1;
+      border: 1px solid white;
+      padding: 10px 10px;
+    `};
   ${(props) =>
     props.kind === 'small' &&
     css`
@@ -84,6 +102,7 @@ const Button = ({
       onClick={onClick}
       className={className}
       type={type}
+      kind={kind}
     >
       {children}
     </ButtonStyles>

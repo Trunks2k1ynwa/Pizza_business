@@ -22,6 +22,22 @@ const {
 } = require('../controllers/authController');
 
 const router = Router();
+router.get('/cookie', (req, res, next) => {
+  const token = 'jldsàkj2354345';
+  const cookieOptions = {
+    expires: new Date(
+      Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000,
+    ),
+    httpOnly: true,
+    signed: true,
+    sameSite: 'none',
+    secure: true,
+  };
+
+  res.cookie('jwt', token, cookieOptions);
+  res.send('Hello word');
+  next();
+});
 
 router.post('/signup', signup);
 router.post('/login', login);

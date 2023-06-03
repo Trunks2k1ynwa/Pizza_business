@@ -24,17 +24,6 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     new: true,
     runValidators: true,
   });
-  // const updatedAccountHistory = [
-  //   ...updatedUser.orders,
-  //   {
-  //     order: req.body.order,
-  //   },
-  // ];
-  // await Account.findByIdAndUpdate(
-  //   req.user.id,
-  //   { orders: updatedAccountHistory },
-  //   { new: true },
-  // );
   return res.status(200).json({
     status: 'success',
     data: {

@@ -1,26 +1,18 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-unused-vars */
-/* eslint-disable react/no-unknown-property */
-import { memo, useMemo } from 'react';
+
+import { memo } from 'react';
 import { useForm } from 'react-hook-form';
 import { showAlert } from '../../alerts.js';
 import { useDispatch } from 'react-redux';
-import {
-  QueryClient,
-  useIsFetching,
-  useQueries,
-  useQuery,
-  useQueryClient,
-} from '@tanstack/react-query';
+import { useMutation, useQueries } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import Button from '../components/atoms/Button.jsx';
 import { Link } from 'react-router-dom';
 import http from '../services/http.js';
-import { result } from 'lodash';
 
 const SignInPage = () => {
-  // const dispatch = useDispatch();
-  // const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const {
     handleSubmit,
     register,
@@ -32,43 +24,54 @@ const SignInPage = () => {
       password: '',
     },
   });
-  const onSubmit = async () => {
-    // try {
-    //   const response = await http.post('accounts/login', data);
-    //   const { token } = response.data;
-    //   const expirationTime = new Date(Date.now() + 24 * 60 * 60 * 1000 * 60); // Hết hạn sau 60 giờ
-    //   document.cookie = `jwt=${token}; expires=${expirationTime.toUTCString()}; path=/`;
-    //   const account = response.data.data.user;
-    //   const getData = async () => {
-    //     try {
-    //       const response = await http.get('accounts/me', {
-    //         headers: {
-    //           Authorization: `Bearer ${token}`,
-    //         },
-    //       });
-    //       const accountMe = response.data;
-    //       dispatch(setAccount(accountMe.data));
-    //     } catch (err) {
-    //       console.log(err);
-    //     }
-    //   };
-    //   getData();
-    //   dispatch(setAccount({ token, ...account }));
-    //   if (response.data.status === 'success') {
-    //     showAlert('success', 'Đăng nhập tài khoản thành công!');
-    //     window.setTimeout(() => {
-    //       navigate('/');
-    //     }, 1000);
-    //   }
-    // } catch (error) {
-    //   showAlert('error', 'Email hoặc mật khẩu chưa chính xác! ');
-    // }
-    // reset();
-  };
+  const { data, mutate } = useMutation({
+    mutationFn: (data) => {
+      return http.post('accounts/login', data);
+    },
+    onSuccess: (data, variables, context) => {
+      showAlert('success', 'Đăng nhập tài khoản thành công!');
+      const { token, account } = data.data;
+      console.log('🚀 ~ account:', account);
+      console.log('🚀 ~ token:', token);
+      // const expirationTime = new Date(Date.now() + 24 * 60 * 60 * 1000 * 60); // Hết hạn sau 60 giờ
+      // document.cookie = `jwt=${token}; expires=${expirationTime.toUTCString()}; path=/`;
 
+      window.setTimeout(() => {
+        // navigate('/');
+      }, 1000);
+    },
+    onError: (error, variables, context) => {
+      showAlert('error', 'Email hoặc mật khẩu chưa chính xác! ');
+    },
+    onSettled: (data, error, variables, context) => {
+      // reset();
+    },
+  });
+
+  const onSubmit = async (data) => {
+    mutate(data);
+    const getData = async () => {
+      try {
+        const response = await http.get('accounts/me', {
+          headers: {
+            // Authorization: `Bearer ${token}`,
+          },
+        });
+        const accountMe = response.data;
+        // dispatch(setAccount(accountMe.data));
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    // getData();
+    // dispatch(setAccount({ token, ...account }));
+  };
+  const handleLoginGoogle = () => {
+    window.open('http://localhost:5000/auth/google', '_self');
+  };
   return (
-    <section className='center-main text-primary h-[95vh]'>
-      <div className=' center-both px-[4rem] flex-[3_3_0%]'>
+    <section className='center-main text-primary h-[90vh]'>
+      <div className=' center-both px-[6rem] flex-[3_3_0%]'>
         <img className='bg-cover' src='/public/Loginuser1.png' alt='' />
       </div>
       <div className='flex-[2_2_0%] bg-primaryF4 bg-cover backdrop-blur-xl flex flex-col justify-center'>
@@ -125,13 +128,38 @@ const SignInPage = () => {
             <Button className='w-full my-5' type='submit'>
               Đăng nhập
             </Button>
-            <div className='text-center'>
-              <label htmlFor=''>Hoặc</label>
+            <div className='text-center text-xl'>
+              <label htmlFor=''>Hoặc đăng nhập với</label>
             </div>
-            <Button className='w-full my-5 bg-white'>
-              <i className='fa-brands mx-5 fa-google' />
-              <label htmlFor=''>Google</label>
-            </Button>
+            <div className='flex gap-x-4 my-5'>
+              <Button
+                onClick={handleLoginGoogle}
+                kind='google'
+                className='w-full flex justify-left items-center'
+              >
+                <i className='fa-brands mx-5 fa-google' />
+                <label className='cursor-pointer h-4' htmlFor=''>
+                  Google
+                </label>
+              </Button>
+              <Button
+                kind='facebook'
+                className='w-full flex justify-left items-center'
+              >
+                <i className='fa-brands mx-5 fa-square-facebook' />
+                <label className='h-4 cursor-pointer' htmlFor=''>
+                  Facebook
+                </label>
+              </Button>
+            </div>
+            <div className='text-center text-xl'>
+              <label htmlFor=''>
+                Nếu chưa có tài khoản ?{' '}
+                <Link className='font-bold' to='/sign-up'>
+                  Đăng ký
+                </Link>
+              </label>
+            </div>
           </form>
         </div>
       </div>

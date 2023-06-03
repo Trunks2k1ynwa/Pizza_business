@@ -6,6 +6,7 @@ class Http {
     this.instance = axios.create({
       baseURL: 'http://localhost:5000/api/v1/',
       timeout: 10000,
+      withCredentials: true,
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${getCookieValue('jwt')}`,
