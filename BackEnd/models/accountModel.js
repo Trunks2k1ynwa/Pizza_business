@@ -9,12 +9,29 @@ const accountSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Please tell us your name!'],
   },
+  provider: {
+    type: String,
+    enum: ['nature', 'google', 'facebook'],
+    default: 'nature',
+  },
   email: {
     type: String,
-    required: [true, 'Please provide your email'],
     unique: true,
     lowercase: true,
-    validate: [validator.isEmail, 'Please provide a valid email'],
+    validate: {
+      validator: function(value) {
+        // Kiểm tra nếu provider là "facebook" thì không cần thiết email
+        if (this.provider === 'facebook') {
+          return true;
+        }
+        // Kiểm tra nếu provider là "nature" hoặc "google" thì email là bắt buộc
+        if (this.provider === 'nature' || this.provider === 'google') {
+          return validator.isEmail(value);
+        }
+        return false;
+      },
+      message: 'Please provide a valid email',
+    },
   },
   status: {
     type: String,
@@ -40,7 +57,7 @@ const accountSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: [true, 'Please provide a password'],
+    // required: [true, 'Please provide a password'],
     minlength: 6,
     select: false,
   },
@@ -66,6 +83,10 @@ const accountSchema = new mongoose.Schema({
   },
   addressDetail: {
     type: String,
+  },
+  id: {
+    type: String,
+    unique: true,
   },
   orders: [
     {

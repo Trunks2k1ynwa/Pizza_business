@@ -8,6 +8,7 @@ import ListProduct from '../components/organisms/ListProduct';
 
 const HomePage = () => {
   const dispatch = useDispatch();
+
   const listBanner = [
     { path: '/public/Banner1.png' },
     { path: '/public/Banner2.png' },
@@ -28,7 +29,6 @@ const HomePage = () => {
     };
     getData();
   }, [dispatch]);
-
   return (
     <>
       <HomeCarousel />

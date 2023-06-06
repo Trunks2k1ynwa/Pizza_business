@@ -8,7 +8,7 @@ const MainLayout = ({ children }) => {
   return (
     <>
       <Header />
-      {children}
+      <div className='mt-[8rem]'>{children}</div>
       <HomeContact />
       <Footer />
     </>

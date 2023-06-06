@@ -31,43 +31,26 @@ const SignInPage = () => {
     onSuccess: (data, variables, context) => {
       showAlert('success', 'Đăng nhập tài khoản thành công!');
       const { token, account } = data.data;
-      console.log('🚀 ~ account:', account);
-      console.log('🚀 ~ token:', token);
-      // const expirationTime = new Date(Date.now() + 24 * 60 * 60 * 1000 * 60); // Hết hạn sau 60 giờ
-      // document.cookie = `jwt=${token}; expires=${expirationTime.toUTCString()}; path=/`;
-
       window.setTimeout(() => {
-        // navigate('/');
+        navigate('/');
       }, 1000);
     },
     onError: (error, variables, context) => {
       showAlert('error', 'Email hoặc mật khẩu chưa chính xác! ');
     },
     onSettled: (data, error, variables, context) => {
-      // reset();
+      reset();
     },
   });
 
   const onSubmit = async (data) => {
     mutate(data);
-    const getData = async () => {
-      try {
-        const response = await http.get('accounts/me', {
-          headers: {
-            // Authorization: `Bearer ${token}`,
-          },
-        });
-        const accountMe = response.data;
-        // dispatch(setAccount(accountMe.data));
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    // getData();
-    // dispatch(setAccount({ token, ...account }));
   };
   const handleLoginGoogle = () => {
-    window.open('http://localhost:5000/auth/google', '_self');
+    window.open('http://localhost:5000/api/v1/auth/google', '_self');
+  };
+  const handleLoginFacebook = () => {
+    window.open('http://localhost:5000/api/v1/auth/facebook', '_self');
   };
   return (
     <section className='center-main text-primary h-[90vh]'>
@@ -143,6 +126,7 @@ const SignInPage = () => {
                 </label>
               </Button>
               <Button
+                onClick={handleLoginFacebook}
                 kind='facebook'
                 className='w-full flex justify-left items-center'
               >

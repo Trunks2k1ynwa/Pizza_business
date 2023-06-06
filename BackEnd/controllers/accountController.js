@@ -31,12 +31,10 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     },
   });
 });
-
 exports.getMe = (req, res, next) => {
   req.params.id = req.user._id;
   next();
 };
-
 exports.deleteMe = catchAsync(async (req, res) => {
   await Account.findByIdAndUpdate(req.user.id, { active: false });
   res.status(204).json({

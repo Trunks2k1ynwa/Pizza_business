@@ -12,7 +12,7 @@ const ButtonStyles = styled.button`
   padding: 1.3rem 2rem;
   border-radius: 5px;
   text-align: center;
-  height: fit-content;
+  display: block;
   cursor: pointer;
   background-color: ${(props) => props.theme.primary};
   ${(props) =>
@@ -36,7 +36,6 @@ const ButtonStyles = styled.button`
     css`
       color: ${(props) => props.theme.primary};
       background-color: white;
-      border: 1px solid black;
       padding: 8px 10px;
     `};
   ${(props) =>
@@ -60,13 +59,15 @@ const ButtonStyles = styled.button`
       height: 43px;
     `};
   &:active {
-    background-color: ${(props) => props.theme.success};
+    background-color: ${(props) => props.theme.primary};
   }
   &:hover {
     -webkit-transform: translateY(-3px);
     transform: translateY(-3px);
     -webkit-box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.15);
-    box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.15);
+    box-shadow: rgba(0, 0, 0, 0.3) 5px 5px 13px 0px;
+    background-color: ${(props) => props.theme.primary};
+    color: ${(props) => props.theme.white};
   }
 `;
 const Button = ({
@@ -80,10 +81,7 @@ const Button = ({
 }) => {
   if (props.to !== '' && typeof props.to === 'string') {
     return (
-      <NavLink
-        to={props.to}
-        className={classNames('bg-primary rounded-xl h-fit', className)}
-      >
+      <NavLink to={props.to} className={classNames('', className)}>
         <ButtonStyles
           disabled={disabled}
           onClick={onClick}
