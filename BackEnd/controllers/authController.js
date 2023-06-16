@@ -6,8 +6,33 @@ const AppError = require('../utils/appError');
 const Account = require('../models/accountModel');
 const Email = require('../utils/email');
 const { default: tranposter } = require('../utils/nodemailer');
-const { createSendToken } = require('../utils/constant');
+// const { createSendToken } = require('../utils/constant');
+const signToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRES_IN,
+  });
+};
 
+const createSendToken = (account, statusCode, req, res) => {
+  const token = signToken(account._id);
+  const cookieOptions = {
+    expires: new Date(
+      Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000,
+    ),
+    httpOnly: true,
+    sameSite: 'none',
+    secure: false,
+  };
+  if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
+  res.cookie('jwt', token, cookieOptions);
+  // Remove password from output
+  account.password = undefined;
+  res.status(statusCode).json({
+    status: 'success',
+    token,
+    account,
+  });
+};
 exports.signup = catchAsync(async (req, res) => {
   const newUser = await Account.create({
     username: req.body.username,
@@ -55,6 +80,7 @@ exports.protect = catchAsync(async (req, res, next) => {
   } else if (req.cookies.jwt) {
     token = req.cookies.jwt;
   }
+  console.log(req.cookies);
   if (!token) {
     return next(new AppError('Bạn chưa đăng nhập, vui lòng đăng nhập', 401));
   }

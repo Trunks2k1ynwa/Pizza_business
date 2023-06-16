@@ -1,15 +1,20 @@
 /* eslint-disable react/prop-types */
 
-import { memo } from 'react';
+import { Link } from 'react-router-dom';
+import { classNames } from '../../utils/constant.js';
 
-const Avatar = ({ imgUrl }) => {
+const Avatar = ({ imgUrl, className }) => {
   return (
-    <img
-      className='h-16 w-16 p-1 border-2 border-primary rounded-full border-box'
-      alt='avatar'
-      src={imgUrl}
-    />
+    <Link
+      className={classNames(
+        className,
+        'rounded-full h-12 lg:h-16 bg-contain bg-center overflow-hidden border-box p-1 aspect-square border-primary border-2',
+      )}
+      to='/me/account'
+    >
+      <img className='scale-125' alt='avatar' src={imgUrl} />
+    </Link>
   );
 };
 
-export default memo(Avatar);
+export default Avatar;

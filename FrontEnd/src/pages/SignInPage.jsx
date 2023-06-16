@@ -32,14 +32,14 @@ const SignInPage = () => {
       showAlert('success', 'Đăng nhập tài khoản thành công!');
       const { token, account } = data.data;
       window.setTimeout(() => {
-        navigate('/');
+        // navigate('/');
       }, 1000);
     },
     onError: (error, variables, context) => {
       showAlert('error', 'Email hoặc mật khẩu chưa chính xác! ');
     },
     onSettled: (data, error, variables, context) => {
-      reset();
+      // reset();
     },
   });
 

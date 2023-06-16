@@ -18,23 +18,23 @@ const discountRouter = require('./routes/discountRoutes');
 require('./utils/passport');
 
 const app = express();
-app.use(
-  cookieSession({
-    name: 'session',
-    keys: ['cookieKey'],
-    maxAge: 24 * 60 * 60 * 100,
-  }),
-);
-// Implement CORS
+app.use(cookieParser('secret'));
 app.use(
   cors({
-    origin: 'http://localhost:3000',
-    methods: 'GET,POST,PUT,DELETE',
+    origin: process.env.CLIENT_URL,
+    methods: 'GET,POST,PATCH,DELETE',
     credentials: true,
   }),
 );
 
-app.use(cookieParser());
+app.use(cookieParser('secret'));
+app.use(
+  cookieSession({
+    name: 'session',
+    keys: ['lama'],
+    maxAge: 24 * 60 * 60 * 100,
+  }),
+);
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -50,9 +50,28 @@ app.use((req, res, next) => {
   setTimeout(next, Delay);
 });
 // ROUTES
-app.get('/check-cookie', (req, res) => {
-  res.send(req.cookies);
-});
+// app.get('/api/v1/set-cookie', (req, res) => {
+//   const cookieOptions = {
+//     // expires: new Date(
+//     //   Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000,
+//     // ),
+//     httpOnly: true,
+//     sameSite: 'none',
+//     secure: false,
+//   };
+
+//   res.cookie('token', 'Giá trị token', cookieOptions);
+//   res.cookie('myCookie', 'Hello from server', {
+//     httpOnly: true,
+//     sameSite: 'none',
+//     secure: true,
+//   });
+
+//   res.send('Cookie set!');
+// });
+// app.get('/api/v1/get-cookie', (req, res) => {
+//   res.send(req.cookies);
+// });
 app.use('/api/v1/products', productRouter);
 app.use('/api/v1/categories', categoryRouter);
 app.use('/api/v1/accounts', accountRouter);

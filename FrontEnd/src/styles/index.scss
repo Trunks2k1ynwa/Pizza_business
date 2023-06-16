@@ -17,6 +17,11 @@
 
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css");
 @import 'react-quill/dist/quill.snow.css';
+// MUI
+.MuiBackdrop-root{
+    background-color: rgba(0, 0, 0, 0.8)!important;
+}
+
 @layer base {
   body {
     @apply font-primary text-base font-normal mx-auto;
@@ -46,6 +51,20 @@
     scroll-behavior: smooth;
     font-size: 62.5%;
   }
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* Kích thước font cho máy tính bảng */
+  html {
+    font-size: 12px;
+  }
+}
+
+@media (min-width: 1024px) {
+  /* Kích thước font cho máy tính xách tay và máy tính để bàn */
+  html {
+    font-size: 12px;
+  }
+}
   input {
     @apply outline-none;
     caret-color: $primary;
@@ -79,6 +98,10 @@
   th,td{
     padding:1rem 2.5rem;
   }
+}
+.col-row-span-1{
+  grid-column: 1;
+  grid-row: 1;
 }
 .smooth-scroll-wrapper {
   // z-index: 2;
@@ -135,7 +158,7 @@
 //   height: 4px;
 //   box-shadow: 50px 50px 100px #b5b3b3, -50px -50px 100px #efeded;
 // }
-.header_nav > a{
+#header_nav  a{
   position: relative;
   &::after{
     transition: all 0.2s linear;
@@ -577,3 +600,4 @@
     font-size: 20px;
   }
 }
+

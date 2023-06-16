@@ -15,7 +15,7 @@ exports.createSendToken = (account, statusCode, req, res) => {
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000,
     ),
     httpOnly: true,
-    sameSite: 'none',
+    // sameSite: 'none',
     secure: false, // Đặt secure thành false khi sử dụng giao thức HTTP
   };
   if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
