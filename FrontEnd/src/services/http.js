@@ -1,10 +1,10 @@
+/* eslint-disable no-undef */
 import axios from 'axios';
-import { getCookieValue } from '../utils/constant.js';
-
+import { getCookieValue } from '../utils/constant';
 class Http {
   constructor() {
     this.instance = axios.create({
-      baseURL: 'http://localhost:5000/api/v1/',
+      baseURL: `${import.meta.env.VITE_SERVER_URL}/api/v1/`,
       timeout: 10000,
       withCredentials: true,
       headers: {

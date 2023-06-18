@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useEffect } from 'react';
 import Routes from './routes/Routes.jsx';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -13,6 +13,11 @@ const queryClient = new QueryClient({
 });
 
 const App = () => {
+  useEffect(() => {
+    window.process = {
+      ...window.process,
+    };
+  }, []);
   return (
     <QueryClientProvider client={queryClient}>
       <Routes />

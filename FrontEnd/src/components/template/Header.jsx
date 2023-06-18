@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 import InputSearch from '@components/molecules/InputSearch';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import useShowElement from '../../hooks/useShowElement';
-// import AccountMe from '../organisms/AccountMe';
 import Avatar from '../atoms/Avatar';
 import AccountMe from '../organisms/AccountMe.jsx';
 
@@ -51,7 +50,9 @@ const Header = () => {
   const accountMe =
     accountJson === 'undefined' ? undefined : JSON.parse(accountJson);
   const handleLogOut = () => {
-    window.open('http://localhost:5000/api/v1/auth/logout', '_self');
+    window.open(
+      `${import.meta.env.VITE_SERVER_URL}/api/v1/auth/logout', '_self`,
+    );
     localStorage.removeItem('account');
   };
   const numberProductCart = 4;
@@ -95,7 +96,7 @@ const Header = () => {
                 <NavLink
                   onClick={toggleVisibility}
                   className={({ isActive }) =>
-                    isActive && 'sm:active-menu lg:after:bg-primary'
+                    isActive ? 'sm:active-menu lg:after:bg-primary' : ''
                   }
                   to={link.url}
                 >
