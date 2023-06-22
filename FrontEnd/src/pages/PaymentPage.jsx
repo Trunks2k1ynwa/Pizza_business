@@ -2,7 +2,7 @@ import Button from '../components/atoms/Button.jsx';
 import { useSelector } from 'react-redux';
 import TimePayment from '../components/molecules/TimePayment.jsx';
 import { useParams } from 'react-router-dom';
-import { convertDate } from '../utils/constant.js';
+import { convertDate } from '../utils/common';
 import { isEmpty } from 'lodash';
 import Breadcumb from '../components/organisms/Breadcumb.jsx';
 

@@ -1,16 +1,44 @@
-import { memo, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { NavLink, useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import InputSearch from '@components/molecules/InputSearch';
-import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import useShowElement from '../../hooks/useShowElement';
+import { SwipeableDrawer } from '@mui/material';
+import ButtonIcon from '../atoms/ButtonIcon';
+import InputSearch from '../molecules/InputSearch';
 import Avatar from '../atoms/Avatar';
-import AccountMe from '../organisms/AccountMe.jsx';
+import { getAccountMe } from '../../services/AccountApi';
+import { useQuery } from '@tanstack/react-query';
+import AccountMe from '../organisms/AccountMe';
+import { getCookieValue, getLocalValue } from '../../utils/common';
+import { debounce } from 'lodash';
 
 const Header = () => {
+  const payload = getCookieValue('payload');
+  const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth >= 1024);
+
+  useEffect(() => {
+    const handleResize = debounce(() => {
+      setIsLargeScreen(window.innerWidth >= 1024);
+    }, 300);
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      toggleDrawer('left', false)();
+    };
+  }, [isLargeScreen]);
+
   const [state, setState] = useState({
     left: false,
+  });
+  const { data, isSuccess } = useQuery({
+    queryKey: ['accountMe'],
+    queryFn: () => {
+      return getAccountMe();
+    },
+    retry: 0,
+    enabled: Boolean(payload),
   });
   const toggleDrawer = (anchor, open) => (event) => {
     if (
@@ -23,10 +51,14 @@ const Header = () => {
 
     setState({ ...state, [anchor]: open });
   };
+
   const [isShowSearch, toggleVisibility, setShowSearch] = useShowElement();
   const { pathname } = useLocation();
   useEffect(() => {
-    if (isShowSearch === true) setShowSearch(false);
+    toggleDrawer('left', false)();
+    if (isShowSearch === true) {
+      setShowSearch(false);
+    }
   }, [pathname]);
   const menuLinks = [
     {
@@ -46,19 +78,30 @@ const Header = () => {
       title: 'Về chúng tôi',
     },
   ];
-  const accountJson = localStorage.getItem('account');
-  const accountMe =
-    accountJson === 'undefined' ? undefined : JSON.parse(accountJson);
+
+  if (isSuccess) {
+    const { username, photo } = data.data.data;
+    localStorage.setItem('accountMe', JSON.stringify({ username, photo }));
+  } else {
+    localStorage.removeItem('accountMe');
+  }
+
   const handleLogOut = () => {
+    localStorage.removeItem('accountMe');
     window.open(
-      `${import.meta.env.VITE_SERVER_URL}/api/v1/auth/logout', '_self`,
+      `${import.meta.env.VITE_SERVER_URL}/api/v1/auth/logout`,
+      '_self',
     );
-    localStorage.removeItem('account');
   };
+
+  const accountMe = getLocalValue('accountMe');
   const numberProductCart = 4;
   return (
     <>
-      <header className='px-8 lg:px-[3rem] py-5 w-full bg-white text-primary items-center z-50 relative gap-x-10 grid'>
+      <header
+        id='header'
+        className='px-8 sm:px-14  lg:px-[3rem] py-5 w-full bg-white text-primary items-center z-50 relative gap-x-10 grid'
+      >
         <nav
           id='header_nav'
           className='col-row-span-1 lg:col-span-3 justify-self-start '
@@ -168,7 +211,7 @@ const Header = () => {
               )}
             </li>
             <li>
-              <span className='header_cart lg:order-5 relative'>
+              <span className='header_cart lg:order-5 relative mr-4'>
                 <Link to='/cart-preview'>
                   <i className='text-4xl cursor-pointer fa-solid fa-bag-shopping' />
                 </Link>
@@ -198,11 +241,11 @@ const Header = () => {
           },
         }}
       >
-        <div className='py-5 lg:py-0  duration-300 transition-all bg-white'>
-          <i
-            onClick={toggleDrawer('left', false)}
-            className='fa-solid cursor-pointer px-8 text-3xl fa-xmark text-primary'
-          />
+        <div className='py-5 lg:py-0  duration-300 transition-all bg-white '>
+          <ButtonIcon onClick={toggleDrawer('left', false)} className='mx-8'>
+            <i className='fa-solid fa-xmark' />
+          </ButtonIcon>
+
           <nav className='header_nav mt-3 flex flex-col'>
             {menuLinks.map((link) => (
               <NavLink
@@ -241,4 +284,4 @@ const Header = () => {
     </>
   );
 };
-export default memo(Header);
+export default Header;

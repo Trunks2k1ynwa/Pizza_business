@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
 import { memo, useEffect, useState } from 'react';
-import { classNames } from '../../utils/constant.js';
 import styled, { css } from 'styled-components';
 
 import http from '../../services/http.js';
@@ -10,6 +9,7 @@ import {
   setProducts,
   setTotalPrice,
 } from '../../../redux/slices/cartSlice.jsx';
+import { classNames } from '../../utils/common';
 
 const CountStyles = styled.div`
   ${(props) =>

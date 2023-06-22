@@ -1,13 +1,13 @@
-/* eslint-disable react/no-unknown-property */
 import { memo } from 'react';
 import { useForm } from 'react-hook-form';
-import http from '../services/http.js';
-import { showAlert } from '../../alerts.js';
-import { useDispatch } from 'react-redux';
-import { setAccount } from '../../redux/slices/accountSlice.jsx';
+import { showAlert } from '../../alerts';
+import { Link, useNavigate } from 'react-router-dom';
+import Button from '../components/atoms/Button';
+import { useMutation } from '@tanstack/react-query';
+import { signUpAccount } from '../services/AccountApi';
 
 const SignUpPage = () => {
-  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const {
     handleSubmit,
     register,
@@ -20,57 +20,44 @@ const SignUpPage = () => {
       password: '',
     },
   });
+  const { mutate } = useMutation({
+    mutationFn: (data) => {
+      return signUpAccount(data);
+    },
+    onSuccess: (data) => {
+      showAlert('success', 'Đăng nhập tài khoản thành công!');
+      const { token, account } = data.data;
+      console.log('🚀 ~ token:', token);
+      const { username, photo } = account;
+      localStorage.setItem('accountMe', JSON.stringify({ username, photo }));
+      window.setTimeout(() => {
+        navigate('/');
+      }, 1000);
+    },
+    onError: () => {
+      showAlert('error', 'Email hoặc mật khẩu chưa chính xác! ');
+    },
+    onSettled: () => {
+      reset();
+    },
+  });
   const onSubmit = async (data) => {
-    try {
-      const response = await http.post('accounts/signup', data);
-      const { token } = response.data;
-      const expirationTime = new Date(Date.now() + 24 * 60 * 60 * 1000 * 60); // Hết hạn sau 60 giờ
-      document.cookie = `jwt=${token}; expires=${expirationTime.toUTCString()}; path=/`;
-
-      const account = response.data.data.user;
-      const getData = async () => {
-        try {
-          const response = await http('accounts/me', {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          const accountMe = response.data;
-          dispatch(setAccount(accountMe.data));
-        } catch (err) {
-          console.log(err);
-        }
-      };
-      getData();
-      dispatch(setAccount({ token, ...account }));
-      if (response.data.status === 'success') {
-        showAlert('success', 'Đăng ký tài khoản thành công!');
-        const { token } = response.data.data;
-        const account = response.data.data.user;
-        dispatch(setAccount({ token, ...account }));
-        window.setTimeout(() => {
-          location.assign('/');
-        }, 1500);
-      }
-    } catch (err) {
-      showAlert('error', err.response.data.message);
-    }
-    reset();
+    mutate(data);
   };
   return (
-    <section className='center-main text-primary h-[95vh]'>
-      <div className=' center-both px-[4rem] flex-[3_3_0%]'>
+    <section className='center-main text-primary px-8 sm:px-14 md:px-20 lg:h-[90vh] lg:px-[3rem] my-10 '>
+      <div className='hidden lg:block lg:pr-[6rem] flex-[3_3_0%] self-center'>
         <img className='bg-cover' src='/public/Loginuser.png' alt='' />
       </div>
-      <div className='flex-[2_2_0%] bg-primaryF4 bg-cover backdrop-blur-xl flex flex-col justify-center'>
-        <div className='text-left px-[15%] my-10'>
+      <div className='lg:flex-[2_2_0%] flex-1 bg-primaryF4 bg-cover backdrop-blur-xl flex flex-col justify-center'>
+        <div className='text-left my-10'>
           <h2 className='font-bold text-4xl'>👋 Chào bạn</h2>
           <p className='text-2xl'>
             Vui lòng điền đầy đủ thông tin bên dưới để đăng nhập tài khoản nha
           </p>
         </div>
-        <div className='center-both'>
-          <form className='w-[70%]' onSubmit={handleSubmit(onSubmit)} action=''>
+        <div className='center-both lg:px-0'>
+          <form className=' w-full' onSubmit={handleSubmit(onSubmit)} action=''>
             <div className='mb-5'>
               <label
                 className='block mb-3 font-bold text-3xl'
@@ -131,12 +118,17 @@ const SignUpPage = () => {
                 </span>
               )}
             </div>
-            <button
-              className='bg-primary w-full mt-7 border transition-all border-primary text-white hover:shadow-xl p-4 pt-6 text-center font-bold rounded-md text-3xl cursor-pointer active:bg-primary'
-              type='submit'
-            >
-              ĐĂNG KÝ
-            </button>
+            <Button className='w-full my-5' type='submit'>
+              Đăng ký
+            </Button>
+            <div className='text-center text-xl mt-5'>
+              <label htmlFor=''>
+                Nếu đã có tài khoản ?{' '}
+                <Link className='font-bold' to='/sign-in'>
+                  Đăng nhập
+                </Link>
+              </label>
+            </div>
           </form>
         </div>
       </div>

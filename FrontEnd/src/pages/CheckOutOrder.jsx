@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { useDispatch, useSelector } from 'react-redux';
 import Heading from '../components/atoms/Heading.jsx';
-import { compareTime } from '../utils/constant.js';
+import { compareTime } from '../utils/common';
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import http from '../services/http.js';

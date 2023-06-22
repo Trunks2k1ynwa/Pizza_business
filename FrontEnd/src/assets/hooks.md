@@ -26,14 +26,14 @@
 # useEffect
 - useEffect(setup, dependencies)
 + setup : function chứa logic effect (có thể return cleanUp hoặc không)
-+ Setup funtion sẽ được invok khi component thêm vào dom
++ Setup funtion sẽ được invok khi component thêm vào dom lần đầu
 + Sau mỗi lần thay đổi depen làm re-render, react sẽ chạy cleanup fn với giá trị cũ sau đó mới chạy setup function với giá trị mới
 + Sau khi component remove khỏi Dom thì React sẽ chạy cleanUp function lần cuối
 + return underined
 + Nếu sử dụng array, object, function trong depen có thể làm component re-render không cần thiết
 + Nếu call api lấy dữ liệu nên có loading, setup function set loading = false, cleanUp loading = true
 + Nhước điểm của fetching data thủ công :https://react.dev/reference/react/useEffect
-
++ Nếu trong useEffect có setstate thì sẽ luôn chạy vào useEffect trong lần tiếp theo dù depen không thay đổi.
 # useLayoutEffect
 - Được gọi ngay trước khi browser cập nhật giao diện
 - Thực hiện các thao tác với DOM trước khi Dom được render ra trình duyệt

@@ -2,7 +2,7 @@ const crypto = require('crypto');
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
-// const AppError = require( '../utils/appError.js';
+const { urlAvatar } = require('../utils/constant');
 
 const accountSchema = new mongoose.Schema({
   username: {
@@ -42,8 +42,7 @@ const accountSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.Mixed,
     url: {
       type: String,
-      default:
-        'https://firebasestorage.googleapis.com/v0/b/naturebeauty-ed50c.appspot.com/o/images%2Favatar.jpg?alt=media&token=8bbbc270-3d6d-4024-9bcd-07f03a14fb12.jpg',
+      default: urlAvatar,
     },
     name: {
       type: String,
@@ -101,8 +100,7 @@ const accountSchema = new mongoose.Schema({
 accountSchema.pre('save', function(next) {
   if (!this.photo) {
     this.photo = {
-      url:
-        'https://firebasestorage.googleapis.com/v0/b/naturebeauty-ed50c.appspot.com/o/images%2Favatar.jpg?alt=media&token=8bbbc270-3d6d-4024-9bcd-07f03a14fb12.jpg',
+      url: urlAvatar,
       name: 'avatar.jpg',
     };
   }

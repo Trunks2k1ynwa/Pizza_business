@@ -21,23 +21,23 @@ const HomePage = () => {
     { path: '/public/Ad4.png' },
     { path: '/public/Ad5.png' },
   ];
-  useEffect(() => {
-    const getData = async () => {
-      const response = await http.get('products');
-      const listProduct = response.data.data;
-      dispatch(setProduct(listProduct));
-    };
-    getData();
-  }, [dispatch]);
+  // useEffect(() => {
+  //   const getData = async () => {
+  //     const response = await http.get('products');
+  //     const listProduct = response.data.data;
+  //     dispatch(setProduct(listProduct));
+  //   };
+  //   getData();
+  // }, [dispatch]);
   return (
     <>
       <HomeCarousel />
       <main>
-        <ListProduct title='💥 TOP SẢN PHẨM BÁN CHẠY' />
+        {/* <ListProduct title='💥 TOP SẢN PHẨM BÁN CHẠY' /> */}
         <HomeBanner className='' listBanner={listAdvertisement} />
-        <ListProduct title='❤️‍🔥 SẢN PHẨM MỚI RA MẮT' />
+        {/* <ListProduct title='❤️‍🔥 SẢN PHẨM MỚI RA MẮT' /> */}
         <HomeBanner className='h-[20rem]' listBanner={listBanner} />
-        <ListProduct title='✨ SẢN PHẨM NỔI BẬT' />
+        {/* <ListProduct title='✨ SẢN PHẨM NỔI BẬT' /> */}
       </main>
     </>
   );

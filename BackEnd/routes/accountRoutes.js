@@ -12,9 +12,9 @@ const {
 } = require('./../controllers/accountController');
 const {
   forgotPassword,
-  login,
-  signup,
-  logout,
+  signIn,
+  signUp,
+  signOut,
   protect,
   resetPassword,
   restrictTo,
@@ -23,9 +23,9 @@ const {
 
 const router = Router();
 
-router.post('/signup', signup);
-router.post('/login', login);
-router.get('/logout', logout);
+router.post('/signup', signUp);
+router.post('/login', signIn);
+router.get('/logout', signOut);
 
 router.post('/forgotPassword', forgotPassword);
 router.patch('/resetPassword/:token', resetPassword);

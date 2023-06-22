@@ -1,35 +1,25 @@
-import { useQuery } from '@tanstack/react-query';
-import http from '../../services/http';
 import Avatar from '../atoms/Avatar';
 import { Link, useLocation } from 'react-router-dom';
-import { memo, useEffect } from 'react';
-import useShowElement from '../../hooks/useShowElement.jsx';
+import { useEffect } from 'react';
+import useShowElement from '../../hooks/useShowElement';
 
-const AccountMe = () => {
+export default function AccountMe() {
   const [isVisible, toggleVisibility] = useShowElement();
-  const { data, isSuccess } = useQuery({
-    queryKey: ['accountMe'],
-    queryFn: async () => {
-      return http.get('auth/login/success');
-    },
-    // enabled: false,
-  });
-  const handleLogOut = () => {
-    window.open('http://localhost:5000/api/v1/auth/logout', '_self');
-    localStorage.removeItem('account');
-  };
-  if (isSuccess) {
-    const { username, photo } = data.data.account;
-    localStorage.setItem('account', JSON.stringify({ username, photo }));
-  }
-  const accountJson = localStorage.getItem('account');
-  const accountMe =
-    accountJson === 'undefined' ? undefined : JSON.parse(accountJson);
-  console.log('🚀 ~ accountMe:', accountMe);
   const { pathname } = useLocation();
   useEffect(() => {
     if (isVisible === true) toggleVisibility();
   }, [pathname]);
+  const handleLogOut = async () => {
+    window.open(
+      `${import.meta.env.VITE_SERVER_URL}/api/v1/auth/logout`,
+      '_self',
+    );
+    localStorage.removeItem('accountMe');
+  };
+
+  const accountJson = localStorage.getItem('accountMe');
+  const accountMe =
+    accountJson === 'undefined' ? undefined : JSON.parse(accountJson);
   return (
     <div className='lg:hidden'>
       {accountMe ? (
@@ -95,6 +85,4 @@ const AccountMe = () => {
       )}
     </div>
   );
-};
-
-export default memo(AccountMe);
+}

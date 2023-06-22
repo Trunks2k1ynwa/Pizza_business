@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 
 import { Link } from 'react-router-dom';
-import { classNames } from '../../utils/constant.js';
+import { classNames } from '../../utils/common';
 
 const Avatar = ({ imgUrl, className }) => {
   return (

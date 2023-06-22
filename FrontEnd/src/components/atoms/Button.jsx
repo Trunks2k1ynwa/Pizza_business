@@ -3,7 +3,7 @@
 import { memo } from 'react';
 import { NavLink } from 'react-router-dom';
 import styled, { css } from 'styled-components';
-import { classNames } from '../../utils/constant.js';
+import { classNames } from '../../utils/common';
 const ButtonStyles = styled.button`
   transition: all 0.3s;
   font-size: 1.6rem;
@@ -15,21 +15,41 @@ const ButtonStyles = styled.button`
   display: block;
   cursor: pointer;
   background-color: ${(props) => props.theme.primary};
+  &:hover {
+    -webkit-transform: translateY(-3px);
+    transform: translateY(-3px);
+    -webkit-box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.15);
+    box-shadow: rgba(0, 0, 0, 0.3) 5px 5px 13px 0px;
+  }
   ${(props) =>
     props.kind === 'google' &&
     css`
-      color: ${(props) => props.theme.white};
-      background-color: #3f85f3;
-      border: 1px solid white;
+      color: ${(props) => props.theme.dark};
+      background-color: white;
       padding: 10px 10px;
+      @media (max-width: 640px) {
+        padding: 5px 5px;
+      }
+      display: flex;
+      height: fit-content;
+      &:hover {
+        box-shadow: rgba(0, 76, 255, 0.1) 2px 2px 10px 0px;
+      }
     `};
   ${(props) =>
     props.kind === 'facebook' &&
     css`
       color: ${(props) => props.theme.white};
       background-color: #2374e1;
-      border: 1px solid white;
       padding: 10px 10px;
+      display: flex;
+      height: fit-content;
+      @media (max-width: 640px) {
+        padding: 5px 5px;
+      }
+      &:hover {
+        box-shadow: rgba(0, 0, 0, 0.1) 2px 2px 10px 0px;
+      }
     `};
   ${(props) =>
     props.kind === 'small' &&
@@ -51,24 +71,17 @@ const ButtonStyles = styled.button`
     props.disabled === true &&
     css`
       cursor: not-allowed;
-      display: flex;
-      background-color: rgba(21, 70, 61, 0.763);
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-      height: 43px;
+      position: relative;
+      &::after {
+        content: '';
+        width: 100%;
+        height: 100%;
+        background-color: #ffffffba;
+        position: absolute;
+        border-radius: 5px;
+        overflow: hidden;
+      }
     `};
-  &:active {
-    background-color: ${(props) => props.theme.primary};
-  }
-  &:hover {
-    -webkit-transform: translateY(-3px);
-    transform: translateY(-3px);
-    -webkit-box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.15);
-    box-shadow: rgba(0, 0, 0, 0.3) 5px 5px 13px 0px;
-    background-color: ${(props) => props.theme.primary};
-    color: ${(props) => props.theme.white};
-  }
 `;
 const Button = ({
   type = 'button',

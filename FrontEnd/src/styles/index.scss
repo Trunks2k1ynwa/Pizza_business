@@ -27,10 +27,8 @@
     @apply font-primary text-base font-normal mx-auto;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
-    max-width: 1440px;
     font-family: "Quicksand", sans-serif;
     width: 100%;
-    overflow-x: hidden;
   }
   * ::selection{
     background-color: $secondary;

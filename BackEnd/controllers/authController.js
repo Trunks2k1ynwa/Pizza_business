@@ -6,34 +6,9 @@ const AppError = require('../utils/appError');
 const Account = require('../models/accountModel');
 const Email = require('../utils/email');
 const { default: tranposter } = require('../utils/nodemailer');
-// const { createSendToken } = require('../utils/constant');
-const signToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRES_IN,
-  });
-};
+const { createSendToken, urlAvatar, saveToken } = require('../utils/constant');
 
-const createSendToken = (account, statusCode, req, res) => {
-  const token = signToken(account._id);
-  const cookieOptions = {
-    expires: new Date(
-      Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000,
-    ),
-    httpOnly: true,
-    sameSite: 'none',
-    secure: false,
-  };
-  if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
-  res.cookie('jwt', token, cookieOptions);
-  // Remove password from output
-  account.password = undefined;
-  res.status(statusCode).json({
-    status: 'success',
-    token,
-    account,
-  });
-};
-exports.signup = catchAsync(async (req, res) => {
+exports.signUp = catchAsync(async (req, res) => {
   const newUser = await Account.create({
     username: req.body.username,
     email: req.body.email,
@@ -43,7 +18,7 @@ exports.signup = catchAsync(async (req, res) => {
   createSendToken(newUser, 201, req, res);
 });
 
-exports.login = catchAsync(async (req, res, next) => {
+exports.signIn = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
 
   // 1) Check if email and password exist
@@ -60,11 +35,10 @@ exports.login = catchAsync(async (req, res, next) => {
   createSendToken(user, 200, req, res);
 });
 
-exports.logout = (req, res) => {
+exports.signOut = (req, res) => {
   res.cookie('jwt', 'loggedout', {
     expires: new Date(Date.now() + 10 * 1000),
     httpOnly: true,
-    domain: 'http:/localhost:5000',
   });
   res.status(200).json({ status: 'success' });
 };
@@ -72,21 +46,20 @@ exports.logout = (req, res) => {
 exports.protect = catchAsync(async (req, res, next) => {
   // 1) Getting token and check of it's there
   let token = '';
-  if (
+  if (req.cookies.jwt) {
+    token = req.cookies.jwt;
+  } else if (
     req.headers.authorization &&
     req.headers.authorization.startsWith('Bearer')
   ) {
     token = req.headers.authorization.split(' ')[1];
-  } else if (req.cookies.jwt) {
-    token = req.cookies.jwt;
   }
-  console.log(req.cookies);
-  if (!token) {
+  if (token === 'null' || token === undefined) {
     return next(new AppError('Bạn chưa đăng nhập, vui lòng đăng nhập', 401));
   }
+
   // 2) Verification token
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
-
   // 3) Check if user still exists
   const currentUser = await Account.findById(decoded.id);
   if (!currentUser) {
@@ -187,7 +160,6 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
     account.passwordResetExpires = undefined;
     await account.save({ validateBeforeSave: false });
 
-    console.log(err);
     return next(
       new AppError('There was an error sending the email. Try again later!'),
       500,
@@ -241,17 +213,33 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   createSendToken(user, 200, req, res);
 });
 
-exports.ensureAuth = (req, res, next) => {
-  console.log('User đã login, chuyển xang trang home');
-  if (req.isAuthenticated()) {
-    return next();
+exports.LoginOauth = catchAsync(async (req, res, next) => {
+  if (req.user) {
+    const { displayName, provider, emails, photos, id } = req.user;
+    const account = {
+      username: displayName,
+      photo: {
+        url: photos ? photos[0].value : urlAvatar,
+        name: displayName,
+      },
+      email: emails && emails[0].value,
+      provider: provider,
+      id: id,
+    };
+    let checkAccount = {};
+    if (emails) {
+      account.email = emails[0].value;
+      checkAccount = { email: emails[0].value };
+    } else {
+      checkAccount = { id: id };
+    }
+    let user = await Account.findOne(checkAccount);
+    if (user) {
+      saveToken(user, res);
+    } else {
+      user = await Account.create(account);
+      saveToken(user, res);
+    }
   }
-  res.redirect('/');
-};
-exports.ensureGuest = (req, res, next) => {
-  console.log('User not login, chuyển xang trang login');
-  if (!req.isAuthenticated()) {
-    return next();
-  }
-  res.redirect('/log');
-};
+  res.redirect(process.env.CLIENT_URL);
+});

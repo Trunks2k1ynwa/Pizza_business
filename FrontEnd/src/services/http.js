@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import axios from 'axios';
-import { getCookieValue } from '../utils/constant';
+import { getTokenValue } from '../utils/common';
 class Http {
   constructor() {
     this.instance = axios.create({
@@ -9,7 +9,7 @@ class Http {
       withCredentials: true,
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${getCookieValue('jwt')}`,
+        Authorization: `Bearer ${getTokenValue()}`,
       },
     });
   }

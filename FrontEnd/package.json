@@ -53,6 +53,7 @@
     "quill-image-uploader": "^1.2.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-google-login": "^5.2.2",
     "react-hook-form": "^7.43.9",
     "react-hot-toast": "^2.4.0",
     "react-query-devtools": "^2.6.3",
