@@ -9,9 +9,9 @@ import InputSearch from '../molecules/InputSearch';
 import Avatar from '../atoms/Avatar';
 import { getAccountMe } from '../../services/AccountApi';
 import { useQuery } from '@tanstack/react-query';
-import AccountMe from '../organisms/AccountMe';
 import { getCookieValue, getLocalValue } from '../../utils/common';
 import { debounce } from 'lodash';
+import MyAccount from '../organisms/MyAccount';
 
 const Header = () => {
   const payload = getCookieValue('payload');
@@ -185,7 +185,7 @@ const Header = () => {
                     </h5>
                   </div>
 
-                  <nav className='hidden xl:block w-fit transition-all absolute font-semibold rounded-md text-xl text-primary whitespace-nowrap top-full group-hover:opacity-100 opacity-0 visible group-hover:visible translate-y-10 group-hover:translate-y-0'>
+                  <nav className='w-fit border hidden lg:block transition-all absolute font-semibold rounded-md text-xl text-primary whitespace-nowrap top-full group-hover:opacity-100 opacity-0 invisible group-hover:visible translate-y-10 group-hover:translate-y-0'>
                     <ul className='transition-all rounded-md  bg-white duration-200 font-semibold overflow-hidden p-1 shadow-inner'>
                       <li className='rounded-md py-3 p-4 hover:bg-semi'>
                         <Link to='/me/account'>Thông tin cá nhân</Link>
@@ -257,7 +257,7 @@ const Header = () => {
                 {link.title}
               </NavLink>
             ))}
-            <AccountMe />
+            <MyAccount />
           </nav>
         </div>
       </SwipeableDrawer>

@@ -16,6 +16,10 @@ textarea,
 select {
   font: inherit;
   outline: none;
+    -webkit-appearance: none;
+    border: 1px solid #f4f4f4;
+    border-radius: 0;
+    max-width: 100%;
 }
 p,
 h1,

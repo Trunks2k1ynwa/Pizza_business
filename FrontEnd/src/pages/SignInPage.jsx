@@ -11,6 +11,7 @@ import { useDispatch } from 'react-redux';
 const SignInPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const [loadingGoogle, setLoadingGoogle] = useState(false);
   const [loadingFacebook, setLoadingFacebook] = useState(false);
   const {
@@ -31,9 +32,8 @@ const SignInPage = () => {
     onSuccess: (data) => {
       showAlert('success', 'Đăng nhập tài khoản thành công!');
       const { token, account } = data.data;
-      console.log('🚀 ~ token:', token);
       const { username, photo } = account;
-      console.log('🚀 ~ account:', account);
+      dispatch({ type: 'getAccountMe', token, account });
       localStorage.setItem('accountMe', JSON.stringify({ username, photo }));
       window.setTimeout(() => {
         navigate('/');
@@ -62,9 +62,7 @@ const SignInPage = () => {
       setLoadingFacebook(true);
     }
   };
-  const handleSaga = () => {
-    dispatch({ type: 'getAccountMe', payload: 'trung' });
-  };
+
   return (
     <section className='center-main text-primary px-8 sm:px-14 md:px-20 lg:h-[90vh] lg:px-[3rem] my-10 '>
       <div className='hidden lg:block lg:pr-[6rem] flex-[3_3_0%] self-center'>
@@ -237,9 +235,6 @@ const SignInPage = () => {
             </div>
           </form>
         </div>
-        <Button className='my-10' onClick={handleSaga}>
-          Đăng nhập
-        </Button>
       </div>
     </section>
   );

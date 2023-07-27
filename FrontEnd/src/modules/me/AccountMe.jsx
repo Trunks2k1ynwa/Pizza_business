@@ -19,7 +19,7 @@ import Breadcumb from '../../components/organisms/Breadcumb.jsx';
 
 const AccountMe = () => {
   const navigate = useNavigate();
-  const account = useSelector((value) => value.account.account);
+  const account = useSelector((state) => state.account);
   const photo = useSelector((value) => value.account.photo);
   const { handleSubmit, setValue, getValues, reset, control } = useForm({
     defaultValues: {},
@@ -34,14 +34,10 @@ const AccountMe = () => {
     reset(account && account);
     dispatch(setPhoto(account?.photo));
   }, [account, dispatch, reset, setValue]);
-
+  // useEffect(() => {
+  //   dispatch({ type: 'GET_ACCOUNT_REQUEST' });
+  // }, [dispatch]);
   const handleLogOut = async () => {
-    const expirationTime = new Date(Date.now() + 10 * 1000);
-    document.cookie = `jwt=loggedout; expires=${expirationTime.toUTCString()}; path=/`;
-    await http.get('accounts/logout');
-    dispatch(setAccount({}));
-    dispatch(setCart({}));
-    navigate('/');
     window.scrollTo(0, 0);
   };
 
@@ -120,12 +116,16 @@ const AccountMe = () => {
       }
     }
   };
+  const handleSaga = () => {
+    dispatch({ type: 'GET_ACCOUNT' });
+  };
   return (
     <div>
       <Toaster position='top-right' reverseOrder={false} />
       <h2 className='text-5xl my-10 text-primary font-semibold'>
         Cài đặt tài khoản
       </h2>
+      <Button onClick={handleSaga}>Click me</Button>
       <div className=' mt-4 '>
         <form
           className='border-b border-primary py-10'

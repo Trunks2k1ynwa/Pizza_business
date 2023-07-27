@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import useShowElement from '../../hooks/useShowElement';
 
-export default function AccountMe() {
+export default function MyAccount() {
   const [isVisible, toggleVisibility] = useShowElement();
   const { pathname } = useLocation();
   useEffect(() => {

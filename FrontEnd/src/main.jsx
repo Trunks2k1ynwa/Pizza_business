@@ -5,7 +5,7 @@ import './styles/index.scss';
 import { ThemeProvider } from 'styled-components';
 import { theme } from './utils/constant.js';
 import { Provider } from 'react-redux';
-import store from '../redux/redux-saga/store.js';
+import store from '../redux/store';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <ThemeProvider theme={theme}>

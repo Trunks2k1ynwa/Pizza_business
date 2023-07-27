@@ -14,3 +14,6 @@ export const logoutAccount = () => {
 export const getAccountMe = () => {
   return http.get('accounts/me');
 };
+export const getAccountError = () => {
+  return http.get('accounts/mes');
+};

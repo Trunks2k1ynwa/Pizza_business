@@ -26,7 +26,7 @@ const HomeCarousel = () => {
         {listSlider.map((slide) => (
           <div className='' key={uuidv4()}>
             <img
-              className='cursor-pointer md:object-top sm:object-center h-[60vh] w-full object-cover brightness-50'
+              className='cursor-pointer md:object-top sm:object-center h-[40vh] md:h-[65vh] w-full object-cover'
               src={slide.path}
               alt=''
             />
@@ -41,7 +41,10 @@ export default memo(HomeCarousel);
 const SliderBtnNPrev = (props) => {
   const { onClick } = props;
   return (
-    <div onClick={onClick} className='swiper-button-prev top-[50%]  left-16'>
+    <div
+      onClick={onClick}
+      className='swiper-button-prev top-[40%] md:top-[50%] left-10  md:left-16'
+    >
       {' '}
       <i className='fa-solid fa-arrow-left' />
     </div>
@@ -50,7 +53,10 @@ const SliderBtnNPrev = (props) => {
 const SliderBtnNext = (props) => {
   const { onClick } = props;
   return (
-    <div onClick={onClick} className='swiper-button-next top-[50%]  right-16'>
+    <div
+      onClick={onClick}
+      className='swiper-button-next top-[40%] md:top-[50%] right-10  md:right-16'
+    >
       {' '}
       <i className='fa-solid fa-arrow-right' />
     </div>

@@ -1,43 +1,61 @@
-import HomeCarousel from '../modules/home/HomeCarousel';
 import HomeBanner from '../modules/home/HomeBanner';
-import { useEffect } from 'react';
-import http from '../services/http.js';
-import { useDispatch } from 'react-redux';
-import { setProduct } from '../../redux/slices/homeSlice';
 import ListProduct from '../components/organisms/ListProduct';
+import HomeCarousel from '../modules/home/HomeCarousel.jsx';
+import { useQueries } from '@tanstack/react-query';
+import http from '../services/http.js';
 
 const HomePage = () => {
-  const dispatch = useDispatch();
-
   const listBanner = [
     { path: '/public/Banner1.png' },
     { path: '/public/Banner2.png' },
     { path: '/public/Banner3.png' },
   ];
   const listAdvertisement = [
-    { path: '/public/Ad1.png' },
-    { path: '/public/Ad2.png' },
-    { path: '/public/Ad3.png' },
-    { path: '/public/Ad4.png' },
-    { path: '/public/Ad5.png' },
+    { path: 'https://comem.vn/images/banners/banner-second-1-desktop.jpg' },
+    { path: 'https://comem.vn/images/banners/banner-second-2-desktop.jpg' },
   ];
-  // useEffect(() => {
-  //   const getData = async () => {
-  //     const response = await http.get('products');
-  //     const listProduct = response.data.data;
-  //     dispatch(setProduct(listProduct));
-  //   };
-  //   getData();
-  // }, [dispatch]);
+  const productsBestSeller = {
+    queryKey: ['product_bestSeller'],
+    queryFn: async () => {
+      return await http.get(
+        'products?fields=title,price,images,discount,overview&sort=-price',
+      );
+    },
+  };
+  const productsNewest = {
+    queryKey: ['product_newest'],
+    queryFn: async () => {
+      return await http.get(
+        'products?fields=images,title,overview,price,discount&sort=averageRating',
+      );
+    },
+  };
+  const productsFeatured = {
+    queryKey: ['product_featured'],
+    queryFn: async () => {
+      return await http.get(
+        'products?fields=images,title,overview,price,discount?&sort=title',
+      );
+    },
+  };
+  const userQueries = useQueries({
+    queries: [productsBestSeller, productsNewest, productsFeatured],
+  });
   return (
     <>
       <HomeCarousel />
-      <main>
-        {/* <ListProduct title='💥 TOP SẢN PHẨM BÁN CHẠY' /> */}
+      <main className='px-8 sm:px-14  lg:px-[3rem] '>
+        <ListProduct
+          dataProduct={userQueries[0]}
+          title='💥 TOP SẢN PHẨM BÁN CHẠY'
+        />
         <HomeBanner className='' listBanner={listAdvertisement} />
-        {/* <ListProduct title='❤️‍🔥 SẢN PHẨM MỚI RA MẮT' /> */}
+        <ListProduct
+          dataProduct={userQueries[1]}
+          title='❤️‍🔥 SẢN PHẨM MỚI RA MẮT'
+        />
         <HomeBanner className='h-[20rem]' listBanner={listBanner} />
-        {/* <ListProduct title='✨ SẢN PHẨM NỔI BẬT' /> */}
+        <ListProduct dataProduct={userQueries[2]} title='✨ SẢN PHẨM NỔI BẬT' />
       </main>
     </>
   );

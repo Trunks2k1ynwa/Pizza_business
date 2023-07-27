@@ -8,7 +8,7 @@
 @tailwind utilities;
 
 @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap");
-
+@import url("react-loading-skeleton/dist/skeleton.css");
 @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600&display=swap');
 // font-family: "Philosopher", sans-serif;
 
@@ -42,25 +42,15 @@
   height: 25px;
   animation: spin 2s linear infinite;
 }
-  main {
-    padding: 0 4rem;
-  }
   html {
     scroll-behavior: smooth;
     font-size: 62.5%;
   }
 
-@media (min-width: 768px) and (max-width: 1023px) {
+@media (min-width: 768px) {
   /* Kích thước font cho máy tính bảng */
-  html {
-    font-size: 12px;
-  }
-}
-
-@media (min-width: 1024px) {
-  /* Kích thước font cho máy tính xách tay và máy tính để bàn */
-  html {
-    font-size: 12px;
+  body {
+    font-size: 1.6rem;
   }
 }
   input {
@@ -77,18 +67,6 @@
   h3,h4,h5{
     font-family: 'Lexend', sans-serif;
     line-height: 1.2;
-  }
-  h3{
-    font-size: 2rem;
-  }
-  h4{
-    font-size: 1.75rem;
-  }
-  h5{
-    font-size: 1.5rem;
-  }
-  p{
-    font-size: 1.4rem;
   }
   button {
     font-family: "Josefin Sans", sans-serif;
@@ -107,15 +85,6 @@
   left: 0;
   overflow: hidden;
 }
-// header{
-//   position: fixed;
-//   top: 0;
-//   left: 0;
-//   width: 100vw;
-// }
-// .header-carousel{
-//   margin-top: 8rem;
-// }
 .flex-center {
   display: flex;
   justify-content: center;
@@ -141,21 +110,6 @@
   font-family: "Philosopher", sans-serif;
 }
 
-// HEADER
-// .active-menu {
-//   position: relative;
-//   color: $primary;
-//   // box-shadow: 50px 50px 100px #b5b3b3, -50px -50px 100px #efeded;
-// }
-// .active-menu::after {
-//   content: "";
-//   position: absolute;
-//   bottom: -10px;
-//   left: 0;
-//   width: 100%;
-//   height: 4px;
-//   box-shadow: 50px 50px 100px #b5b3b3, -50px -50px 100px #efeded;
-// }
 #header_nav  a{
   position: relative;
   &::after{
@@ -182,7 +136,6 @@
 .swiper-slide {
   text-align: center;
   font-size: 18px;
-  /* Center slide text vertically */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -248,8 +201,11 @@
 }
 
 // Slide Product
-.slide-component{
-  margin: auto;
+.list_product .slick-slider{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: fit-content;
 }
 .btn-next,.btn-prev{
     font-size: 0;
@@ -269,18 +225,19 @@
     z-index: 1;
       width: fit-content;
 }
-.btn-next{
-  right:-3rem;
-}
-.btn-prev{
-  left:-3rem;
-}
+
 
 .header-carousel .slick-dots{
   bottom: 20px;
+  text-align: center;
   & li{
-    margin: 0 2.5rem;
-
+  width: 5rem;
+  display: inline-block;
+  opacity: 0.4;
+  margin: 0 1rem;
+  }
+  & li.slick-active{
+    opacity: 1;
   }
 }
 .header-carousel .slick-dots button::before{
@@ -294,18 +251,21 @@
 .header-carousel .slick-active button::before{
   color: transparent!important;
 }
-
-
-// Product-detail
-#product-detail .slick-dots li{
+@media (max-width:640px) {
+  .header-carousel .slick-dots{
+    bottom: 10px;
+    & li{
+      margin: 0 0.5rem;
+    }
+  }
+  .header-carousel .slick-dots button::before{
+  height: 4px;
   width: 5rem;
-  padding-top: 3rem;
-  display: inline-block;
-  opacity: 0.4;
 }
-#product-detail li.slick-active{
-  opacity: 1;
 }
+
+// // Product-detail
+
 #product-detail .slick-dots img{
   border: 1px solid $primary;
 }
@@ -597,4 +557,55 @@
 .entry-content .ql-snow .ql-editor h4 {
     font-size: 20px;
   }
+}
+
+.css-1elwnq4-MuiPaper-root-MuiAccordion-root{
+  box-shadow: 0px 0px 0px 0px transparent!important;
+  margin: 0px!important;
+  border: none!important;
+  &::before{
+    height: 0px!important;
+  }
+}
+
+.hidden-input{
+  display: none!important;
+}
+.collections-orderby select {
+    background-color: #e7edd7;
+    background-image: url('https://assets.comem.vn/images/arrows-select.svg');
+    background-position: calc(100% - 10px);
+    background-repeat: no-repeat;
+    border-radius: 5px;
+    color: #738136;
+    height: 34px;
+    padding: 0 25px 0 10px;
+    & option{
+      font-weight: 700;
+    }
+}
+#product_collection
+{
+      color: $primary;
+    font-weight: 700;
+    line-height: 28px;
+    margin-bottom: 26px;
+    padding-bottom: 6px;
+    position: relative;
+    text-transform: uppercase;
+    &:after{
+    background-image: url('https://assets.comem.vn/images/heading-line.svg');
+    background-position: 0;
+    background-repeat: no-repeat;
+    background-size: contain;
+    content: "";
+    height: 6px;
+    left: 0;
+    position: absolute;
+    top: 100%;
+    width: 100%;
+}
+}
+.css-o4b71y-MuiAccordionSummary-content.Mui-expanded {
+  margin: 10px 0!important;
 }
